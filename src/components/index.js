@@ -1,3 +1,4 @@
 import Want from "./Want";
+import Wantlist from "./Wantlist";
 
-export { Want };
+export { Want, Wantlist };

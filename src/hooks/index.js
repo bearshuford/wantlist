@@ -1,4 +1,5 @@
 import useFetch from "./useFetch";
 import useWantlist from "./useWantlist";
+import useVideos from "./useVideos";
 
-export { useFetch, useWantlist };
+export { useFetch, useVideos, useWantlist };

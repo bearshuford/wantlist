@@ -1,9 +1,6 @@
 import { useEffect, useState } from "react";
 import { useFetch } from "./";
-
-const endpoints = {
-  wantlist: (username) => `https://api.discogs.com/users/${username}/wants`,
-};
+import { endpoints } from '../utils';
 
 const parseWants = (item) => {
   const parsed = { ...item.basic_information };
