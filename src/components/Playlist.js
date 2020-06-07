@@ -6,7 +6,6 @@ const PlayButton = ({ onClick }) => (
 );
 
 function Playlist({ videos = [] }) {
-  // const [playing, setPlaying] = useState(false);
   const [currentTrack, setCurrentTrack] = useState(null);
 
   return (

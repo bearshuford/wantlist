@@ -7,13 +7,32 @@ const commaList = (item, i, { length }) => {
   else return <span key={`${item}-${i}`}> {item} </span>;
 };
 
-function Want({ videos, id, title, year, artists, genres, styles }) {
+function Want({
+  videos,
+  cover,
+  id,
+  title,
+  year,
+  artists,
+  marketUrl,
+  numberAvailable,
+  notes,
+  lowestPrice,
+  images,
+  genres,
+  styles,
+}) {
   return (
     <div key={id} style={{ marginBottom: 20 }}>
-      <div>{`${title} (${year})`}</div>
-      <div>{artists.map(({ name }) => name).map(commaList)}</div>
-      <div>{genres.map(commaList)}</div>
-      <div>{styles.map(commaList)}</div>
+      {!!cover && <img src={cover} alt="want cover" style={{ width: 100 }} />}
+      <div>
+        <b>{`${title} (${year})`}</b>
+        {" – "}
+        {artists.map(({ name }) => name).map(commaList)}
+      </div>
+      {!!marketUrl && numberAvailable > 0 && (
+        <a href={marketUrl}>{`Check marketplace`}</a>
+      )}
       {!!videos && <Playlist videos={videos} />}
     </div>
   );
