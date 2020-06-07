@@ -1,6 +1,7 @@
 function useFetch() {
   const options = {
-    headers: { "user-agent": "wantlist //v0.1" },
+    mode: "cors",
+    headers: { "user-agent": "wantlist" },
   };
 
   function get(url) {
