@@ -1,7 +1,6 @@
 import React from "react";
 import styled, { css } from "styled-components";
 
-
 const cardWidth = 290;
 // const cardMediaHeight = 300;
 
@@ -46,20 +45,21 @@ const PlayButton = ({ onClick }) => (
   <StyledPlayButton onClick={onClick}>&#9654;&#65038;</StyledPlayButton>
 );
 
-function Playlist({ videos = [], playing, setPlaying }) {
+function Playlist({ videos = [], playing, setPlaying, hasPlayingVideo }) {
   return (
     <>
       {videos.length > 0 &&
         videos.slice(0, 3).map(({ uri, title }) => (
           <StyledTrack
             key={uri}
+            hasPlayingVideo={hasPlayingVideo}
             onClick={() => {
               setPlaying({ uri, title });
             }}
             tabIndex="0"
           >
             {title}
-            <PlayButton/>
+            <PlayButton />
           </StyledTrack>
         ))}
     </>
