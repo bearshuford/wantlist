@@ -17,10 +17,12 @@ function Wantlist({ list }) {
         .sort((a, b) => {
           const aHasVids = !!a.videos && a.videos.length > 0;
           const bHasVids = !!b.videos && b.videos.length > 0;
-          return bHasVids && !aHasVids ? 1 : bHasVids && aHasVids ? 1 : -1;
+          if ((bHasVids && !aHasVids)) return 1;
+          else if(!bHasVids && aHasVids) return -1;
+          else return 0;
         })
         .map((item) => (
-          <Want {...item} {...{ playing, setPlaying }} key={item.id}/>
+          <Want {...item} {...{ playing, setPlaying }} key={item.id} />
         ))}
     </StyledWantlist>
   );
