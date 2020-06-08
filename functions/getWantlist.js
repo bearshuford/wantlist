@@ -32,11 +32,13 @@ const parseWants = async (item) => {
     try {
       let request = await fetch(endpoints.release(id), options);
       let release = await request.json();
-      console.log("release", release);
-      let info = {
+      const { have, want } = release.community || {};
+      const info = {
         numberAvailable: release.num_for_sale,
         images: release.images,
         notes: release.notes,
+        have,
+        want,
       };
       return info;
     } catch (error) {
