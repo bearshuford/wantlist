@@ -17,7 +17,7 @@ function Wantlist({ list }) {
         .sort((a, b) => {
           const aHasVids = !!a.videos && a.videos.length > 0;
           const bHasVids = !!b.videos && b.videos.length > 0;
-          return bHasVids && !aHasVids ? 1 : -1;
+          return bHasVids && !aHasVids ? 1 : bHasVids && aHasVids ? 1 : -1;
         })
         .map((item) => (
           <Want {...item} {...{ playing, setPlaying }} key={item.id}/>
