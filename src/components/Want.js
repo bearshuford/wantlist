@@ -81,6 +81,14 @@ function Want({
     !!video &&
     videos.filter((vid) => vid.uri === video.uri).length > 0;
 
+  const handlePause = () => {
+    setPlaying(false);
+  };
+
+  const handlePlay = () => {
+    setPlaying(true);
+  };
+
   return (
     <StyledWantCard hasPlayingVideo={hasPlayingVideo}>
       <StyledCardMedia>
@@ -92,6 +100,8 @@ function Want({
           <ReactPlayer
             playing={playing}
             url={video.uri}
+            onPause={handlePause}
+            onPlay={handlePlay}
             width="100%"
             height={cardMediaHeight - 8}
             style={{ width: "100%", height: cardWidth }}
