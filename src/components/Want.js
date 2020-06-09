@@ -57,6 +57,8 @@ const commaList = (item, i, { length }) => {
 function Want({
   playing,
   setPlaying,
+  video,
+  setVideo,
   videos,
   cover,
   title,
@@ -75,8 +77,9 @@ function Want({
 }) {
   const hasPlayingVideo =
     !!videos &&
-    !!playing &&
-    videos.filter((video) => video.uri === playing.uri).length > 0;
+    videos.length > 0 &&
+    !!video &&
+    videos.filter((vid) => vid.uri === video.uri).length > 0;
 
   return (
     <StyledWantCard hasPlayingVideo={hasPlayingVideo}>
@@ -87,10 +90,11 @@ function Want({
           )
         ) : (
           <ReactPlayer
-            url={playing.uri}
-            style={{ width: "100%", height: cardWidth }}
+            playing={playing}
+            url={video.uri}
             width="100%"
             height={cardMediaHeight - 8}
+            style={{ width: "100%", height: cardWidth }}
           />
         )}
       </StyledCardMedia>
@@ -105,6 +109,8 @@ function Want({
             hasPlayingVideo={hasPlayingVideo}
             videos={videos}
             playing={playing}
+            video={video}
+            setVideo={setVideo}
             setPlaying={setPlaying}
           />
         )}

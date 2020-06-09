@@ -9,7 +9,8 @@ const StyledWantlist = styled.div`
 `;
 
 function Wantlist({ list }) {
-  const [playing, setPlaying] = useState(null);
+  const [playing, setPlaying] = useState(true);
+  const [video, setVideo] = useState(null);
 
   return (
     <StyledWantlist style={{}}>
@@ -17,12 +18,16 @@ function Wantlist({ list }) {
         .sort((a, b) => {
           const aHasVids = !!a.videos && a.videos.length > 0;
           const bHasVids = !!b.videos && b.videos.length > 0;
-          if ((bHasVids && !aHasVids)) return 1;
-          else if(!bHasVids && aHasVids) return -1;
+          if (bHasVids && !aHasVids) return 1;
+          else if (!bHasVids && aHasVids) return -1;
           else return 0;
         })
         .map((item) => (
-          <Want {...item} {...{ playing, setPlaying }} key={item.id} />
+          <Want
+            {...item}
+            {...{ playing, setPlaying, video, setVideo }}
+            key={item.id}
+          />
         ))}
     </StyledWantlist>
   );
