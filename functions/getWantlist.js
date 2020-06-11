@@ -5,9 +5,9 @@ const token = process.env.DISCOGS_TOKEN;
 const endpoints = {
   master: (id) => `https://api.discogs.com/masters/${id}?token=${token}`,
   release: (id) => `https://api.discogs.com/releases/${id}?token=${token}`,
+  marketplace: (id) => `https://discogs.com/sell/release/${id}`,
   wantlist: (username) =>
     `https://api.discogs.com/users/${username}/wants?token=${token}`,
-  marketplace: (id) => `https://discogs.com/sell/release/${id}`,
 };
 
 const options = {
@@ -15,27 +15,17 @@ const options = {
 };
 
 const parseWants = async (item) => {
-  const getMedia = async (id) => {
-    try {
-      let request = await fetch(endpoints.master(id), options);
-      let release = await request.json();
-      let videos = [];
-      if (!!release && release.videos)
-        videos = release.videos.map(({ uri, title }) => ({ uri, title }));
 
-      return videos;
-    } catch (error) {
-      throw error;
-    }
-  };
   const getRelease = async (id) => {
     try {
       let request = await fetch(endpoints.release(id), options);
       let release = await request.json();
       const { have, want } = release.community || {};
+      console.log('release', release)
       const info = {
         numberAvailable: release.num_for_sale,
         images: release.images,
+        videos: release.videos,
         notes: release.notes,
         have,
         want,
@@ -68,20 +58,14 @@ const parseWants = async (item) => {
   };
 
   try {
-    if (!info.master_id) {
-      return want;
-    }
-    const videos = await getMedia(info.master_id);
-    const releaseInfo = await getRelease(info.master_id);
-
+    const releaseInfo = await getRelease(info.id);
     return {
       ...want,
       ...releaseInfo,
-      videos,
     };
   } catch (error) {
     //TODO: error handling
-    console.log("error getting master", error);
+    console.log("error gettingrelease", error);
     return want;
   }
 };
