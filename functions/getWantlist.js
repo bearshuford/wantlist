@@ -21,7 +21,6 @@ const parseWants = async (item) => {
       let request = await fetch(endpoints.release(id), options);
       let release = await request.json();
       const { have, want } = release.community || {};
-      console.log('release', release)
       const info = {
         numberAvailable: release.num_for_sale,
         images: release.images,
