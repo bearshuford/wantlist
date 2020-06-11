@@ -14,8 +14,12 @@ const StyledTrack = styled.div`
   border-color: #333;
   cursor: pointer;
   box-sizing: border-box;
-  width: ${cardWidth}px;
+  width: 100%;
   max-width: 100%;
+
+  @media (min-width: 500px) {
+    width: ${cardWidth}px;
+  }
 
   &:hover {
     text-decoration: underline;

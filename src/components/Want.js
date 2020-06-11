@@ -8,21 +8,28 @@ const cardWidth = 290;
 const cardMediaHeight = 300;
 
 const StyledWantCard = styled.div`
-  margin: 24px;
+  font-family: sans-serif;
   margin-bottom: 36px;
-  border: 1px solid #333;
-  width: ${cardWidth}px;
-  max-width: calc(100% - 48px);
+  border: 2px solid #333;
+  width: calc(100% - 20px);
+  max-width: calc(100% - 20px);
   display: flex;
   flex-flow: column;
+  margin: 14px 10px;
+
+  @media (min-width: 500px) {
+    width: ${cardWidth}px;
+    max-width: calc(100% - 24px);
+    margin: 24px;
+  }
 
   h4 {
     margin: 8px 0 16px;
-    padding: 0 12px;
+    padding: 0 15px;
   }
 
   p {
-    padding: 0 12px;
+    padding: 0 15px;
   }
 
   ${(props) =>
@@ -46,7 +53,20 @@ const StyledMarketLink = styled.a`
 `;
 
 const StyledCardMedia = styled.div`
-  height: ${cardMediaHeight}px;
+  @media (min-width: 500px) {
+    display: flex;
+    flex-flow: column nowrap;
+    justify-content: space-between;
+    height: ${cardMediaHeight + 20}px;
+  }
+`;
+
+const StyledCommunity = styled.div`
+  font-size: 12px;
+  text-transform: uppercase;
+  padding: 2px 15px 6px;
+  display: flex;
+  justify-content: space-between;
 `;
 
 const commaList = (item, i, { length }) => {
@@ -107,6 +127,11 @@ function Want({
             style={{ width: "100%", height: cardWidth }}
           />
         )}
+
+        <StyledCommunity>
+          <div>{have} have</div>
+          <div>{want} want</div>
+        </StyledCommunity>
       </StyledCardMedia>
       <StyledCardBody>
         <h4>
