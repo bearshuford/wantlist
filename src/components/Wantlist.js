@@ -1,11 +1,17 @@
 import React, { useState, useRef } from "react";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import { Want, Controls } from "./";
 
 const StyledWantlist = styled.div`
   display: flex;
   flex-flow: row wrap;
+
+  ${(props) =>
+    props.hasVideo &&
+    css`
+      padding-bottom: 96px;
+    `};
 `;
 
 function Wantlist({ list }) {
@@ -15,14 +21,17 @@ function Wantlist({ list }) {
   const playingRef = useRef(null);
 
   const scrollToPlaying = () => {
-    if(!!video) {
-      window.scrollTo({ behavior: "smooth", top: playingRef.current.offsetTop - 12 });
+    if (!!video) {
+      window.scrollTo({
+        behavior: "smooth",
+        top: playingRef.current.offsetTop - 12,
+      });
     }
   };
 
   return (
     <>
-      <StyledWantlist style={{}}>
+      <StyledWantlist hasVideo={!!video}>
         {list
           .sort((a, b) => {
             const aHasVids = !!a.videos && a.videos.length > 0;
@@ -39,7 +48,9 @@ function Wantlist({ list }) {
             />
           ))}
       </StyledWantlist>
-      {!!video && <Controls {...{ playing, setPlaying, video, scrollToPlaying }} />}
+      {!!video && (
+        <Controls {...{ playing, setPlaying, video, scrollToPlaying }} />
+      )}
     </>
   );
 }
