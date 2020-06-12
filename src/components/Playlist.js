@@ -9,7 +9,7 @@ const StyledTrack = styled.div`
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  padding: 10px 34px 10px 12px;
+  padding: 12px 34px 12px 12px;
   border-top: 1px solid;
   border-color: #333;
   cursor: pointer;
@@ -65,6 +65,7 @@ function Playlist({
   setVideo,
   setPlaying,
   hasPlayingVideo,
+  thumbnail
 }) {
   return (
     <>
@@ -76,7 +77,7 @@ function Playlist({
             if (isPlaying) {
               setPlaying(!playing);
             } else {
-              setVideo({ uri, title });
+              setVideo({ uri, title, thumbnail });
               setPlaying(true);
             }
           };

@@ -86,9 +86,10 @@ function Want({
   artists,
   marketUrl,
   notes,
-  id,
   have,
   want,
+  playingRef,
+  id,
   images,
   numberAvailable,
   lowestPrice,
@@ -110,7 +111,7 @@ function Want({
   };
 
   return (
-    <StyledWantCard hasPlayingVideo={hasPlayingVideo}>
+    <StyledWantCard hasPlayingVideo={hasPlayingVideo} ref={hasPlayingVideo ? playingRef : null}>
       <StyledCardMedia>
         {!hasPlayingVideo ? (
           !!cover && (
@@ -142,6 +143,7 @@ function Want({
         {!!videos && (
           <Playlist
             hasPlayingVideo={hasPlayingVideo}
+            thumbnail={cover}
             videos={videos}
             playing={playing}
             video={video}
