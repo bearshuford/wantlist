@@ -1,7 +1,9 @@
 import React, { useState, useRef } from "react";
+import { useParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 import { Want, Controls } from "./";
+import { useWantlist } from "../hooks";
 
 const StyledWantlist = styled.div`
   display: flex;
@@ -14,9 +16,13 @@ const StyledWantlist = styled.div`
     `};
 `;
 
-function Wantlist({ list }) {
+function Wantlist() {
   const [playing, setPlaying] = useState(true);
   const [video, setVideo] = useState(null);
+
+  const { username } = useParams();
+  const { wantlist, status } = useWantlist(username);
+  const { loading, error } = status;
 
   const playingRef = useRef(null);
 
@@ -29,10 +35,13 @@ function Wantlist({ list }) {
     }
   };
 
+  if (!!error) return <h2>error</h2>;
+  if (!!loading) return <h2>loading</h2>;
+
   return (
     <>
       <StyledWantlist hasVideo={!!video}>
-        {list
+        {wantlist
           .sort((a, b) => {
             const aHasVids = !!a.videos && a.videos.length > 0;
             const bHasVids = !!b.videos && b.videos.length > 0;

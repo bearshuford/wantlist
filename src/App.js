@@ -1,24 +1,42 @@
 import React from "react";
 import styled from "styled-components";
+import { BrowserRouter as Router, Route } from "react-router-dom";
+import { createGlobalStyle } from "styled-components";
 
-import { Wantlist } from "./components";
-import { useWantlist } from "./hooks";
+import { Wantlist, Search } from "./components";
 
-const username = "bearshuford";
+const GlobalStyle = createGlobalStyle`
+  body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 18px;
+    padding-bottom: 0;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+`;
 
 const StyledApp = styled.div`
   max-width: 2000px;
   margin: 0 auto;
-  box-sizing: border-box;
+`;
+
+const NavBar = styled.h1`
+  display: block;
+  margin: 0;
 `;
 
 function App() {
-  const { wantlist } = useWantlist(username);
-
   return (
     <StyledApp>
-      <h1>{username}'s Wantlist</h1>
-      <Wantlist list={wantlist} />
+      <GlobalStyle whiteColor />
+      <NavBar>wantlist</NavBar>
+      <Router>
+        <Route path="/" exact component={Search} />
+        <Route path="/:username" component={Wantlist} />
+      </Router>
     </StyledApp>
   );
 }

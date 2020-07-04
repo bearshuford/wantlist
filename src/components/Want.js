@@ -8,17 +8,17 @@ const cardWidth = 290;
 const cardMediaHeight = 300;
 
 const StyledWantCard = styled.div`
-  font-family: sans-serif;
   margin-bottom: 36px;
-  border: 2px solid #333;
-  width: calc(100% - 20px);
-  max-width: calc(100% - 20px);
+  width: 100%;
   display: flex;
   flex-flow: column;
-  margin: 14px 10px;
+  margin: 14px 0 28px;
 
   @media (min-width: 500px) {
     width: ${cardWidth}px;
+    border: 2px solid #555;
+    margin: 14px 10px;
+
     max-width: calc(100% - 24px);
     margin: 24px;
   }
@@ -46,10 +46,12 @@ const StyledCardBody = styled.div`
 
 const StyledMarketLink = styled.a`
   display: block;
-  text-align: center;
   padding-top: 18px;
   padding-bottom: 4px;
-  margin-top: 24px;
+
+  @media (min-width: 500px) {
+    margin-top: 24px;
+  }
 `;
 
 const StyledCardMedia = styled.div`
@@ -111,7 +113,10 @@ function Want({
   };
 
   return (
-    <StyledWantCard hasPlayingVideo={hasPlayingVideo} ref={hasPlayingVideo ? playingRef : null}>
+    <StyledWantCard
+      hasPlayingVideo={hasPlayingVideo}
+      ref={hasPlayingVideo ? playingRef : null}
+    >
       <StyledCardMedia>
         {!hasPlayingVideo ? (
           !!cover && (
@@ -139,7 +144,7 @@ function Want({
           <span>{`${title} (${year}) – `}</span>
           {artists.map(({ name }) => name).map(commaList)}
         </h4>
-        {!!notes && <p> {notes} </p>}
+        {/* {!!notes && <p> {notes} </p>} */}
         {!!videos && (
           <Playlist
             hasPlayingVideo={hasPlayingVideo}
