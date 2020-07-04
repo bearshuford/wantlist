@@ -21,7 +21,7 @@ const StyledLink = styled(Link)`
     margin-top: 27px;
   }
 
-  @media (min-width: 1078px) {
+  @media (min-width: 1024px) {
     margin-top: 36px;
     width: 284px;
     margin-left: auto;
@@ -44,7 +44,7 @@ const StyledInput = styled.input`
     font-size: 20px;
   }
 
-  @media (min-width: 1078px) {
+  @media (min-width: 1024px) {
     height: 60px;
     font-size: 22px;
   }
@@ -60,7 +60,7 @@ const StyledLabel = styled.label`
     font-size: 18px;
   }
 
-  @media (min-width: 1078px) {
+  @media (min-width: 1024px) {
     font-size: 22px;
     margin-bottom: 10px;
   }
@@ -74,7 +74,7 @@ const StyledSearch = styled.div`
     margin-top: 102px;
   }
 
-  @media (min-width: 1078px) {
+  @media (min-width: 1024px) {
     margin-top: 132px;
     max-width: 466px;
   }

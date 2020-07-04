@@ -9,8 +9,7 @@ const GlobalStyle = createGlobalStyle`
   body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
-    padding: 18px;
-    padding-bottom: 0;
+    padding: 0;
   }
 
   * {
@@ -21,6 +20,16 @@ const GlobalStyle = createGlobalStyle`
 const StyledApp = styled.div`
   max-width: 2000px;
   margin: 0 auto;
+  padding: 18px;
+  padding-bottom: 0;
+
+  @media (min-width: 768px) {
+    padding: 32px 40px 0;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 42px 76px 0;
+  }
 `;
 
 const NavBar = styled.h1`
