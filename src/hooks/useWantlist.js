@@ -29,7 +29,7 @@ const useWantlist = (username) => {
       }
     };
     fetchWantlist();
-  }, [username]);
+  }, [username, get]);
 
   return { wantlist, status: { loading, error } };
 };
