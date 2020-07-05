@@ -3,7 +3,7 @@ import styled from "styled-components";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 
-import { Wantlist, Search } from "./components";
+import { Wantlist, Search, Navbar } from "./components";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -32,17 +32,12 @@ const StyledApp = styled.div`
   }
 `;
 
-const NavBar = styled.h1`
-  display: block;
-  margin: 0;
-`;
-
 function App() {
   return (
     <StyledApp>
-      <GlobalStyle whiteColor />
-      <NavBar>wantlist</NavBar>
+      <GlobalStyle />
       <Router>
+        <Navbar />
         <Route path="/" exact component={Search} />
         <Route path="/:username" component={Wantlist} />
       </Router>

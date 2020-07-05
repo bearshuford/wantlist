@@ -67,34 +67,34 @@ const StyledLabel = styled.label`
 `;
 
 const StyledSearch = styled.div`
-  margin: 60px auto 0;
+  margin: 36px auto 0;
   max-width: 368px;
 
   @media (min-width: 768px) {
-    margin-top: 102px;
+    margin-top: 58px;
   }
 
   @media (min-width: 1024px) {
-    margin-top: 132px;
+    margin-top: 88px;
     max-width: 466px;
   }
 `;
 
 function Search() {
-  const [username, setUsername] = useState(null);
+  const [username, setUsername] = useState('');
 
   return (
     <StyledSearch>
       <StyledLabel htmlFor="discogsUsername">discogs username</StyledLabel>
       <StyledInput
         autoFocus
-        placeholder="bearshuford"
+        placeholder={defaultUsername}
         id="discogsUsername"
         onChange={({ target }) => setUsername(target.value)}
         value={username}
       />
-      <StyledLink to={`/${!!username ? username : defaultUsername}`}>
-        wantlist
+      <StyledLink to={`/${!!username ? username : defaultUsername}`} disabled={username === ''}>
+        view wantlist
       </StyledLink>
     </StyledSearch>
   );
