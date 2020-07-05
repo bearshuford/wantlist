@@ -8,6 +8,10 @@ const StyledCard = styled(Link)`
   margin-bottom: 24px;
   text-decoration: none;
   color: #000;
+
+  @media (min-width: 768px) {
+    flex-flow: column nowrap;
+  }
 `;
 
 const StyledCardMedia = styled.div`
@@ -18,6 +22,17 @@ const StyledCardMedia = styled.div`
   img {
     height: 100%;
   }
+
+  @media (min-width: 768px) {
+    height: unset;
+    width: 100%;
+
+    img {
+      height: unset;
+      width: 100%;
+      margin-bottom: 10px;
+    }
+  }
 `;
 
 const StyledTitle = styled.h4`
@@ -25,10 +40,18 @@ const StyledTitle = styled.h4`
   font-weight: bold;
   font-size: 14px;
   line-height: 1.1;
+
+  @media(min-width: 1024px) {
+    font-size: 15px;
+  }
 `;
 
 const StyledArtist = styled.div`
   font-size: 13px;
+
+  @media(min-width: 1024px) {
+    font-size: 14px;
+  }
 `;
 
 const commaList = (item, i, { length }) => {

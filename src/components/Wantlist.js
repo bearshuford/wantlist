@@ -8,6 +8,29 @@ import { useWantlist } from "../hooks";
 const StyledWantlist = styled.div`
   display: flex;
   flex-flow: column nowrap;
+
+  @media (min-width: 768px) {
+    display: grid;
+    grid-gap: 52px 57px;
+    grid-template-columns: repeat(3, 1fr);
+    /* grid-template-columns: repeat(auto-fit, minmax(186px, 1fr)); */
+  }
+
+  @media (min-width: 1070px) {
+    display: grid;
+    grid-gap: 52px;
+    margin: 0 auto;
+    max-width: calc(100% - 80px);
+    width: 100%;
+    grid-template-columns: repeat(4, 1fr);
+    /* grid-template-columns: repeat(auto-fit, minmax(186px, 1fr)); */
+  }
+
+  @media (min-width: 1400px) {
+    grid-column-gap: 62px;
+    max-width: calc(100% - 176px);
+    /* grid-template-columns: repeat(auto-fit, minmax(186px, 1fr)); */
+  }
 `;
 
 function Wantlist() {
