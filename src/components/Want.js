@@ -1,80 +1,87 @@
 import React from "react";
-import ReactPlayer from "react-player";
-import styled, { css } from "styled-components";
+import styled from "styled-components";
 
-import { Playlist } from "./";
-
-const cardWidth = 290;
-const cardMediaHeight = 300;
+import Navbar from "./Navbar";
 
 const StyledWantCard = styled.div`
-  margin-bottom: 36px;
-  width: 100%;
-  display: flex;
-  flex-flow: column;
-  margin: 14px 0 28px;
+  background: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  padding: 18px;
+  overflow-y: auto;
 
-  @media (min-width: 500px) {
-    width: ${cardWidth}px;
-    border: 2px solid #555;
-    margin: 14px 10px;
-
-    max-width: calc(100% - 24px);
-    margin: 24px;
-  }
-
-  h4 {
-    margin: 8px 0 16px;
-    padding: 0 15px;
-  }
-
-  p {
-    padding: 0 15px;
-  }
-
-  ${(props) =>
-    props.hasPlayingVideo &&
-    css`
-      border-color: violet;
-      /* width: 100%; */
-    `};
-`;
-
-const StyledCardBody = styled.div`
-  flex: 1;
-`;
-
-const StyledMarketLink = styled.a`
-  display: block;
-  padding-top: 18px;
-  padding-bottom: 4px;
-
-  @media (min-width: 500px) {
-    margin-top: 24px;
+  @media (min-width: 1070px) {
+    position: relative;
+    padding: 0;
   }
 `;
 
 const StyledCardMedia = styled.div`
-  @media (min-width: 500px) {
-    display: flex;
-    flex-flow: column nowrap;
-    justify-content: space-between;
-    height: ${cardMediaHeight + 20}px;
+  display: flex;
+  flex-flow: row nowrap;
+  margin-bottom: 20px;
+  overflow-x: auto;
+
+  img {
+    height: 134px;
+    margin-right: 15px;
+  }
+
+  @media (min-width: 768px) {
+    margin-bottom: 48px;
+
+    img {
+      height: 192px;
+      margin-right: 22px;
+    }
+  }
+
+  @media (min-width: 1400px) {
+    margin-bottom: 32px;
+
+    img {
+      height: 168px;
+      margin-right: 20px;
+    }
+  }
+
+  @media (min-width: 1800px) {
   }
 `;
 
-const StyledCommunity = styled.div`
-  font-size: 12px;
-  text-transform: uppercase;
-  padding: 2px 15px 6px;
-  display: flex;
-  justify-content: space-between;
+const StyledCardBody = styled.div`
+  h3 {
+    font-size: 30px;
+    font-weight: bold;
+    margin: 0;
+  }
+  h4 {
+    font-size: 22px;
+    font-weight: normal;
+    margin: 0;
+    margin-bottom: 26px;
+  }
+`;
+
+const StyledMarketLink = styled.a``;
+
+const StyledCommunity = styled.div``;
+
+const StyledNavbar = styled.div`
+    @media (min-width: 1070px) {
+      display: none;
+    }
 `;
 
 const commaList = (item, i, { length }) => {
   if (i + 1 < length) return <span key={`${item}-${i}`}> {`${item}, `} </span>;
   else return <span key={`${item}-${i}`}> {item} </span>;
 };
+
+
 
 function Want({
   playing,
@@ -83,6 +90,7 @@ function Want({
   setVideo,
   videos,
   cover,
+  country,
   title,
   year,
   artists,
@@ -98,69 +106,29 @@ function Want({
   genres,
   styles,
 }) {
-  const hasPlayingVideo =
-    !!videos &&
-    videos.length > 0 &&
-    !!video &&
-    videos.filter((vid) => vid.uri === video.uri).length > 0;
-
-  const handlePause = () => {
-    setPlaying(false);
-  };
-
-  const handlePlay = () => {
-    setPlaying(true);
-  };
-
   return (
-    <StyledWantCard
-      hasPlayingVideo={hasPlayingVideo}
-      ref={hasPlayingVideo ? playingRef : null}
-    >
+    <StyledWantCard>
+      <StyledNavbar>
+        <Navbar />
+      </StyledNavbar>
       <StyledCardMedia>
-        {!hasPlayingVideo ? (
-          !!cover && (
-            <img src={cover} alt="want cover" style={{ width: "100%" }} />
-          )
-        ) : (
-          <ReactPlayer
-            playing={playing}
-            url={video.uri}
-            onPause={handlePause}
-            onPlay={handlePlay}
-            width="100%"
-            height={cardMediaHeight - 8}
-            style={{ width: "100%", height: cardWidth }}
-          />
-        )}
-
+        {!!images &&
+          images.length > 0 &&
+          images.map(({ uri }) => <img key={uri} src={uri} alt="want cover" />)}
+      </StyledCardMedia>
+      <StyledCardBody>
+        <h3>
+          <span>{`${title}`}</span>
+        </h3>
+        <h4>{artists.map(({ name }) => name).map(commaList)}</h4>
         <StyledCommunity>
           <div>{have} have</div>
           <div>{want} want</div>
         </StyledCommunity>
-      </StyledCardMedia>
-      <StyledCardBody>
-        <h4>
-          <span>{`${title} (${year}) – `}</span>
-          {artists.map(({ name }) => name).map(commaList)}
-        </h4>
-        {/* {!!notes && <p> {notes} </p>} */}
-        {!!videos && (
-          <Playlist
-            hasPlayingVideo={hasPlayingVideo}
-            thumbnail={cover}
-            videos={videos}
-            playing={playing}
-            video={video}
-            setVideo={setVideo}
-            setPlaying={setPlaying}
-          />
-        )}
       </StyledCardBody>
       {!!marketUrl && (
         <StyledMarketLink
           href={marketUrl}
-          style={{ display: "block", margin: 12 }}
         >{`Check marketplace`}</StyledMarketLink>
       )}
     </StyledWantCard>

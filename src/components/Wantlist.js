@@ -2,40 +2,18 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 
-import { WantlistItem, Loading, Error } from "./";
+import { List, Want } from "./";
 import { useWantlist } from "../hooks";
 
-const StyledWantlist = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-
-  @media (min-width: 768px) {
-    display: grid;
-    grid-gap: 52px 57px;
-    grid-template-columns: repeat(3, 1fr);
-    /* grid-template-columns: repeat(auto-fit, minmax(186px, 1fr)); */
-  }
-
+const SidebarWantlist = css`
   @media (min-width: 1070px) {
-    display: grid;
-    grid-gap: 52px;
-    margin: 0 auto;
-    max-width: calc(100% - 80px);
-    width: 100%;
-    grid-template-columns: repeat(4, 1fr);
-    /* grid-template-columns: repeat(auto-fit, minmax(186px, 1fr)); */
+    display: flex;
+    flex-flow: row nowrap;
   }
+`;
 
-  @media (min-width: 1400px) {
-    grid-column-gap: 62px;
-    max-width: calc(100% - 176px);
-  }
-
-  @media (min-width: 1800px) {
-    grid-column-gap: 62px;
-    max-width: calc(100% - 200px);
-    grid-template-columns: repeat(5, 1fr);
-  }
+const StyledWantlist = styled.div`
+  ${(props) => props.sidebar && SidebarWantlist}
 `;
 
 function Wantlist() {
@@ -45,17 +23,22 @@ function Wantlist() {
     status: { loading, error },
   } = useWantlist(username);
 
-  if (!!error) return <Error />;
-  if (!!loading) return <Loading />;
+  const release =
+    !!wantlist &&
+    wantlist.length > 0 &&
+    wantlist.find((want) => "" + want.id === releaseId);
+  console.log("release", release);
 
   return (
-    <>
-      <StyledWantlist hasSeletion={!!releaseId}>
-        {wantlist.map((item) => (
-          <WantlistItem {...item} key={item.id} hasSeletion={!!releaseId} />
-        ))}
-      </StyledWantlist>
-    </>
+    <StyledWantlist sidebar={!!release}>
+      <List
+        wantlist={wantlist}
+        releaseId={releaseId}
+        error={error}
+        loading={loading}
+      />
+      {!!release && <Want {...release} />}
+    </StyledWantlist>
   );
 }
 

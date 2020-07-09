@@ -1,4 +1,5 @@
 import Want from "./Want";
+import List from "./List";
 import Wantlist from "./Wantlist";
 import WantlistItem from "./WantlistItem";
 import Playlist from "./Playlist";
@@ -10,6 +11,7 @@ import Error from "./Error";
 
 export {
   Want,
+  List,
   Wantlist,
   WantlistItem,
   Playlist,

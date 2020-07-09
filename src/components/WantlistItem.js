@@ -1,6 +1,14 @@
 import React from "react";
 import { Link, useParams } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
+
+const SidebarCard = css`
+  @media (min-width: 1070px) {
+    flex-flow: row nowrap;
+    align-items: center;
+    padding-right: 66px;
+  }
+`;
 
 const StyledCard = styled(Link)`
   display: flex;
@@ -11,6 +19,21 @@ const StyledCard = styled(Link)`
 
   @media (min-width: 768px) {
     flex-flow: column nowrap;
+  }
+
+  ${(props) => props.sidebar && SidebarCard}
+`;
+
+const SidebarMedia = css`
+  @media (min-width: 1070px) {
+    height: 52px;
+    width: 66px;
+    margin-bottom: 0;
+
+    img {
+      height: 100%;
+      width: unset;
+    }
   }
 `;
 
@@ -33,6 +56,14 @@ const StyledCardMedia = styled.div`
       margin-bottom: 10px;
     }
   }
+
+  ${(props) => props.sidebar && SidebarMedia}
+`;
+
+const SidebarTitle = css`
+  @media (min-width: 1070px) {
+    font-size: 13px;
+  }
 `;
 
 const StyledTitle = styled.h4`
@@ -44,6 +75,14 @@ const StyledTitle = styled.h4`
   @media (min-width: 1024px) {
     font-size: 15px;
   }
+
+  ${(props) => props.sidebar && SidebarTitle}
+`;
+
+const SidebarArtist = css`
+  @media (min-width: 1070px) {
+    font-size: 12px;
+  }
 `;
 
 const StyledArtist = styled.div`
@@ -52,6 +91,7 @@ const StyledArtist = styled.div`
   @media (min-width: 1024px) {
     font-size: 14px;
   }
+  ${(props) => props.sidebar && SidebarArtist}
 `;
 
 const commaList = (item, i, { length }) => {
@@ -60,16 +100,20 @@ const commaList = (item, i, { length }) => {
 };
 
 function WantlistItem({ id, cover, title, artists, hasSelection }) {
-  const { username } = useParams();
+  const { username, releaseId } = useParams();
 
   return (
-    <StyledCard to={`/${username}/${id}`} hasSelection={hasSelection}>
-      <StyledCardMedia>
+    <StyledCard
+      to={`/${username}/${id}`}
+      active={hasSelection}
+      sidebar={!!releaseId}
+    >
+      <StyledCardMedia sidebar={!!releaseId}>
         <img src={cover} alt="want cover" />
       </StyledCardMedia>
       <div>
-        <StyledTitle>{title}</StyledTitle>
-        <StyledArtist>
+        <StyledTitle sidebar={!!releaseId}>{title}</StyledTitle>
+        <StyledArtist sidebar={!!releaseId}>
           {artists.map(({ name }) => name).map(commaList)}
         </StyledArtist>
       </div>

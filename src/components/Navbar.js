@@ -10,29 +10,30 @@ const StyledNavBar = styled.div`
   align-items: center;
   margin: 16px 0 44px;
 
-  h4 {
+  a {
     display: block;
     margin: 0;
     font-weight: 900;
     font-size: 24px;
-  }
-  a {
-    font-weight: 900;
-    font-size: 16px;
+    text-decoration: none;
     color: #000;
+  }
+  a + a {
+    font-size: 16px;
+    text-decoration: underline;
   }
 
   @media (min-width: 768px) {
-    h4 {
+    a {
       font-size: 26px;
     }
   }
 
   @media (min-width: 1024px) {
-    h4 {
+    a {
       font-size: 36px;
     }
-    a {
+    a + a {
       font-size: 20px;
     }
   }
@@ -49,7 +50,9 @@ function Navbar() {
 
   return (
     <StyledNavBar>
-      <h4>wantlist</h4>
+      <Link to={!!username ? `/${username}` : "/"}>
+        wantlist
+      </Link>
       {!!username && <Link to="/">{username}</Link>}
     </StyledNavBar>
   );
