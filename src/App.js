@@ -1,6 +1,6 @@
 import React from "react";
 import styled from "styled-components";
-import { BrowserRouter as Router, Route } from "react-router-dom";
+import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 
 import { Wantlist, Search, Navbar } from "./components";
@@ -38,8 +38,11 @@ function App() {
       <GlobalStyle />
       <Router>
         <Navbar />
-        <Route path="/" exact component={Search} />
-        <Route path="/:username" component={Wantlist} />
+        <Switch>
+          <Route path="/" exact component={Search} />
+          <Route path="/:username/:releaseId" component={Wantlist} exact />
+          <Route path="/:username" component={Wantlist} exact />
+        </Switch>
       </Router>
     </StyledApp>
   );

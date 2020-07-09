@@ -1,6 +1,6 @@
 import React from "react";
 import { useParams } from "react-router-dom";
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
 import { WantlistItem, Loading, Error } from "./";
 import { useWantlist } from "../hooks";
@@ -29,12 +29,17 @@ const StyledWantlist = styled.div`
   @media (min-width: 1400px) {
     grid-column-gap: 62px;
     max-width: calc(100% - 176px);
-    /* grid-template-columns: repeat(auto-fit, minmax(186px, 1fr)); */
+  }
+
+  @media (min-width: 1800px) {
+    grid-column-gap: 62px;
+    max-width: calc(100% - 200px);
+    grid-template-columns: repeat(5, 1fr);
   }
 `;
 
 function Wantlist() {
-  const { username } = useParams();
+  const { username, releaseId } = useParams();
   const {
     wantlist,
     status: { loading, error },
@@ -45,9 +50,9 @@ function Wantlist() {
 
   return (
     <>
-      <StyledWantlist>
+      <StyledWantlist hasSeletion={!!releaseId}>
         {wantlist.map((item) => (
-          <WantlistItem {...item} key={item.id} />
+          <WantlistItem {...item} key={item.id} hasSeletion={!!releaseId} />
         ))}
       </StyledWantlist>
     </>

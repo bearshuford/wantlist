@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import styled from "styled-components";
 
 const StyledCard = styled(Link)`
@@ -41,7 +41,7 @@ const StyledTitle = styled.h4`
   font-size: 14px;
   line-height: 1.1;
 
-  @media(min-width: 1024px) {
+  @media (min-width: 1024px) {
     font-size: 15px;
   }
 `;
@@ -49,7 +49,7 @@ const StyledTitle = styled.h4`
 const StyledArtist = styled.div`
   font-size: 13px;
 
-  @media(min-width: 1024px) {
+  @media (min-width: 1024px) {
     font-size: 14px;
   }
 `;
@@ -59,9 +59,11 @@ const commaList = (item, i, { length }) => {
   else return <span key={`${item}-${i}`}> {item} </span>;
 };
 
-function WantlistItem({ id, cover, title, artists }) {
+function WantlistItem({ id, cover, title, artists, hasSelection }) {
+  const { username } = useParams();
+
   return (
-    <StyledCard>
+    <StyledCard to={`/${username}/${id}`} hasSelection={hasSelection}>
       <StyledCardMedia>
         <img src={cover} alt="want cover" />
       </StyledCardMedia>
