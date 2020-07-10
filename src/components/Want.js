@@ -3,6 +3,22 @@ import styled from "styled-components";
 
 import Navbar from "./Navbar";
 
+const IMAGE_HEIGHT = {
+  sm: 134,
+  md: 192,
+  lg: 168,
+};
+const MARGIN_BOTTOM = {
+  sm: 20,
+  md: 48,
+  lg: 32,
+};
+const MARGIN_RIGHT = {
+  sm: 15,
+  md: 22,
+  lg: 20,
+};
+
 const StyledWantCard = styled.div`
   background: white;
   position: fixed;
@@ -10,41 +26,47 @@ const StyledWantCard = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 18px;
+  padding: 18px 0 18px 18px;
   overflow-y: auto;
 
+  @media (min-width: 768px) {
+    padding: 20px 0 18px 40px;
+  }
+  
   @media (min-width: 1070px) {
     position: relative;
     padding: 0;
+    width: 100%;
   }
 `;
 
 const StyledCardMedia = styled.div`
   display: flex;
   flex-flow: row nowrap;
-  margin-bottom: 20px;
+  margin-bottom: ${MARGIN_BOTTOM.sm}px;
   overflow-x: auto;
 
   img {
-    height: 134px;
-    margin-right: 15px;
+    height: ${IMAGE_HEIGHT.sm}px;
+    margin-right: ${MARGIN_RIGHT.sm}px;
   }
 
   @media (min-width: 768px) {
-    margin-bottom: 48px;
+    margin-bottom: ${MARGIN_BOTTOM.md}px;
 
     img {
-      height: 192px;
-      margin-right: 22px;
+      height: ${IMAGE_HEIGHT.md}px;
+      margin-right: ${MARGIN_RIGHT.md}px;
     }
   }
 
-  @media (min-width: 1400px) {
-    margin-bottom: 32px;
+
+  @media (min-width: 1200px) {
+    margin-bottom: ${MARGIN_BOTTOM.lg}px;
 
     img {
-      height: 168px;
-      margin-right: 20px;
+      height: ${IMAGE_HEIGHT.lg}px;
+      margin-right: ${MARGIN_RIGHT.lg}px;
     }
   }
 
@@ -57,6 +79,7 @@ const StyledCardBody = styled.div`
     font-size: 30px;
     font-weight: bold;
     margin: 0;
+    line-height: 1.1;
   }
   h4 {
     font-size: 22px;
@@ -64,6 +87,39 @@ const StyledCardBody = styled.div`
     margin: 0;
     margin-bottom: 26px;
   }
+
+  padding-bottom: 48px;
+
+  @media (min-width: 768px) {
+    padding-bottom: 44px;
+
+    h3 {
+      font-size: 38px;
+      margin-bottom: 2px;
+    }
+    h4 {
+      font-size: 24px;
+      margin-bottom: 23px;
+    }
+  }
+
+  @media (min-width: 1070px) {
+    max-width: 600px;
+    margin-bottom: 3px;
+  }
+
+  @media (min-width: 1400px) {
+    padding-bottom: 42px;
+
+    h3 {
+      font-size: 38px;
+    }
+    h4 {
+      font-size: 24px;
+      margin-bottom: 23px;
+    }
+  }
+
 `;
 
 const StyledMarketLink = styled.a``;
@@ -71,9 +127,14 @@ const StyledMarketLink = styled.a``;
 const StyledCommunity = styled.div``;
 
 const StyledNavbar = styled.div`
-    @media (min-width: 1070px) {
-      display: none;
-    }
+  @media (min-width: 1070px) {
+    display: none;
+  }
+`;
+
+const Info = styled.div`
+  font-size: 18px;
+  margin-bottom: 4px;
 `;
 
 const commaList = (item, i, { length }) => {
@@ -81,31 +142,43 @@ const commaList = (item, i, { length }) => {
   else return <span key={`${item}-${i}`}> {item} </span>;
 };
 
-
+const InfoItem = ({ label, value }) =>
+  !!value && (
+    <Info>
+      {label}: {value}
+    </Info>
+  );
 
 function Want({
+  country,
+  formats,
+  title,
+  year,
+  artists,
+  marketUrl,
+  images,
   playing,
   setPlaying,
   video,
   setVideo,
   videos,
   cover,
-  country,
-  title,
-  year,
-  artists,
-  marketUrl,
   notes,
   have,
   want,
   playingRef,
   id,
-  images,
   numberAvailable,
   lowestPrice,
   genres,
   styles,
 }) {
+  const firstFormat = !!formats && formats.length > 0 && formats[0];
+  console.log(firstFormat.name, firstFormat.descriptions);
+  const genresList =
+    !!genres &&
+    genres.length > 0 &&
+    genres.map((genre) => genre).map(commaList);
   return (
     <StyledWantCard>
       <StyledNavbar>
@@ -121,10 +194,10 @@ function Want({
           <span>{`${title}`}</span>
         </h3>
         <h4>{artists.map(({ name }) => name).map(commaList)}</h4>
-        <StyledCommunity>
-          <div>{have} have</div>
-          <div>{want} want</div>
-        </StyledCommunity>
+
+        <InfoItem label="Country" value={country} />
+        <InfoItem label="Year" value={year} />
+        <InfoItem label="Genres" value={genresList} />
       </StyledCardBody>
       {!!marketUrl && (
         <StyledMarketLink

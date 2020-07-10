@@ -7,9 +7,16 @@ const SidebarMixin = css`
   @media (min-width: 1070px) {
     display: flex;
     width: 325px;
-    border-right: #949494;
+    border-right: 1px solid #949494;
     margin: 0;
+    margin-right: 24px;
     flex-shrink: 0;
+    overflow-y: scroll;
+    height: calc(100vh - 143px);
+
+    @media (min-width: 1400px) {
+      margin-right: 84px;
+    }
   }
 `;
 

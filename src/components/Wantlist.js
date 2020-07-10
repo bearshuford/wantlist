@@ -27,7 +27,6 @@ function Wantlist() {
     !!wantlist &&
     wantlist.length > 0 &&
     wantlist.find((want) => "" + want.id === releaseId);
-  console.log("release", release);
 
   return (
     <StyledWantlist sidebar={!!release}>

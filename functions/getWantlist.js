@@ -26,6 +26,9 @@ const parseWants = async (item) => {
         images: release.images,
         videos: release.videos,
         notes: release.notes,
+        country: release.country,
+        artistsSort: release.artists_sort,
+        formats: release.formats,
         have,
         want,
       };
