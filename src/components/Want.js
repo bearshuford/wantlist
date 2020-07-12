@@ -124,18 +124,6 @@ const StyledMarketLink = styled.a`
   font-size: 26px;
 `;
 
-const StyledNavbarWrapper = styled.div`
-  /* margin-right: 18px;
-
-  @media (min-width: 768px) {
-    margin-right: 40px;
-    padding-top: 14px;
-  }
-  @media (min-width: 1070px) {
-    display: none;
-  } */
-`;
-
 const Info = styled.div`
   font-size: 18px;
   margin-bottom: 4px;
@@ -187,9 +175,7 @@ function Want({
   const firstFormat = !!formats && formats.length > 0 && formats[0];
   return (
     <StyledWantCard>
-      <StyledNavbarWrapper>
-        <Navbar release/>
-      </StyledNavbarWrapper>
+      <Navbar release />
       <ImageSlider images={images} />
       <StyledCardBody>
         <h3>{title}</h3>
