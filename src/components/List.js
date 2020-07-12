@@ -17,6 +17,7 @@ const StyledListWrapper = styled.div`
     props.sidebar &&
     css`
       overflow-y: auto;
+      overflow-x: hidden;
       margin-right: 24px;
       border-right: 1px solid #949494;
       flex-shrink: 0;
