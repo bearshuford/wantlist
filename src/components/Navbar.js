@@ -1,45 +1,82 @@
 import React from "react";
 import { useRouteMatch, Link } from "react-router-dom";
 
-import styled from "styled-components";
+import styled, { css } from "styled-components";
 
-const StyledNavBar = styled.div`
+const ReleaseMixin = css`
+  position: relative;
+  margin-right: 18px;
+
+  @media (min-width: 768px) {
+    margin-right: 40px;
+    padding-top: 14px;
+  }
+  @media (min-width: 1070px) {
+    display: none;
+  }
+`;
+
+const StyledNavbar = styled.div`
   display: flex;
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
   margin: 16px 0 44px;
 
-  a {
+  h1 {
     display: block;
     margin: 0;
     font-weight: 900;
     font-size: 24px;
-    text-decoration: none;
-    color: #000;
   }
-  a + a {
+  h1 + a {
+    display: block;
+    font-weight: 900;
     font-size: 16px;
-    text-decoration: underline;
+    color: #000;
   }
 
   @media (min-width: 768px) {
-    a {
+    h1 {
       font-size: 26px;
     }
   }
 
   @media (min-width: 1024px) {
-    a {
+    h1 {
       font-size: 36px;
     }
-    a + a {
+    h1 + a {
       font-size: 20px;
     }
   }
+
+  ${(props) => props.release && ReleaseMixin}
 `;
 
-function Navbar() {
+const StyledCloseButton = styled(Link)`
+  position: fixed;
+  top: 22px;
+  right: 24px;
+  font-size: 28px;
+  font-weight: 900;
+  text-decoration: none;
+  color: #000;
+
+  @media (min-width: 768px) {
+    right: 42px;
+    top: 32px;
+    font-size: 42px;
+  }
+`;
+
+const CloseButton = ({ to }) => (
+  <StyledCloseButton to={to} title="close">
+    &#10005;
+  </StyledCloseButton>
+);
+
+function Navbar({ release }) {
   const match = useRouteMatch({
     path: "/:username",
     strict: true,
@@ -49,12 +86,14 @@ function Navbar() {
   const { username } = !!match ? match.params : {};
 
   return (
-    <StyledNavBar>
-      <Link to={!!username ? `/${username}` : "/"}>
-        wantlist
-      </Link>
-      {!!username && <Link to="/">{username}</Link>}
-    </StyledNavBar>
+    <StyledNavbar release={!!release}>
+      {!!release ? <CloseButton to={`/${username}`} /> : <h1>wantlist</h1>}
+      {!!username && !release && (
+        <Link to="/" title="back to search">
+          {username}
+        </Link>
+      )}
+    </StyledNavbar>
   );
 }
 
