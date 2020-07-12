@@ -1,5 +1,5 @@
 import React from "react";
-import { Link, useParams } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import styled, { css } from "styled-components";
 
 const SidebarCard = css`
@@ -10,7 +10,8 @@ const SidebarCard = css`
   }
 `;
 
-const StyledCard = styled(Link)`
+const StyledCard = styled(NavLink)`
+  position: relative;
   display: flex;
   flex-flow: row nowrap;
   margin-bottom: 24px;
@@ -22,6 +23,17 @@ const StyledCard = styled(Link)`
   }
 
   ${(props) => props.sidebar && SidebarCard}
+
+  &.active:before {
+      @media (min-width: 1070px) {
+        content: "\\279E";
+        position: absolute;
+        font-size: 28px;
+        top: calc(50% - 20px);
+        right: 16px;
+      }
+    }
+  }
 `;
 
 const SidebarMedia = css`
@@ -99,13 +111,13 @@ const commaList = (item, i, { length }) => {
   else return <span key={`${item}-${i}`}> {item} </span>;
 };
 
-function WantlistItem({ id, cover, title, artists, hasSelection }) {
+function WantlistItem({ id, cover, title, artists, active }) {
   const { username, releaseId } = useParams();
 
   return (
     <StyledCard
       to={`/${username}/${id}`}
-      active={hasSelection}
+      active={releaseId === "" + id}
       sidebar={!!releaseId}
     >
       <StyledCardMedia sidebar={!!releaseId}>
