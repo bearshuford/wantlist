@@ -19,7 +19,6 @@ const MARGIN_RIGHT = {
   lg: 20,
 };
 
-
 const StyledWantCard = styled.div`
   background: white;
   position: fixed;
@@ -33,7 +32,7 @@ const StyledWantCard = styled.div`
   @media (min-width: 768px) {
     padding: 20px 0 18px 40px;
   }
-  
+
   @media (min-width: 1070px) {
     position: relative;
     padding: 0;
@@ -41,7 +40,7 @@ const StyledWantCard = styled.div`
   }
 `;
 
-const StyledCardMedia = styled.div`
+const StyledImageSlider = styled.div`
   display: flex;
   flex-flow: row nowrap;
   margin-bottom: ${MARGIN_BOTTOM.sm}px;
@@ -60,7 +59,6 @@ const StyledCardMedia = styled.div`
       margin-right: ${MARGIN_RIGHT.md}px;
     }
   }
-
 
   @media (min-width: 1200px) {
     margin-bottom: ${MARGIN_BOTTOM.lg}px;
@@ -120,16 +118,22 @@ const StyledCardBody = styled.div`
       margin-bottom: 23px;
     }
   }
-
 `;
 
-const StyledMarketLink = styled.a``;
+const StyledMarketLink = styled.a`
+  font-size: 26px;
+`;
 
+const StyledNavbarWrapper = styled.div`
+  /* margin-right: 18px;
 
-const StyledNavbar = styled.div`
+  @media (min-width: 768px) {
+    margin-right: 40px;
+    padding-top: 14px;
+  }
   @media (min-width: 1070px) {
     display: none;
-  }
+  } */
 `;
 
 const Info = styled.div`
@@ -137,10 +141,14 @@ const Info = styled.div`
   margin-bottom: 4px;
 `;
 
-const commaList = (item, i, { length }) => {
-  if (i + 1 < length) return <span key={`${item}-${i}`}> {`${item}, `} </span>;
-  else return <span key={`${item}-${i}`}> {item} </span>;
+const commaList = (array) => {
+  if (!!array && array.length > 0) return array.join(", ");
+  else return null;
 };
+
+const Format = ({ name, descriptions }) => (
+  <Info>{`${name} | ${commaList(descriptions)}`}</Info>
+);
 
 const InfoItem = ({ label, value }) =>
   !!value && (
@@ -149,55 +157,48 @@ const InfoItem = ({ label, value }) =>
     </Info>
   );
 
+const ImageSlider = ({ images }) => (
+  <StyledImageSlider>
+    {!!images &&
+      images.length > 0 &&
+      images.map(({ uri, i }) => (
+        <img key={uri} src={uri} alt={`release upload ${i}`} />
+      ))}
+  </StyledImageSlider>
+);
+
 function Want({
-  country,
-  formats,
   title,
-  year,
-  artists,
-  marketUrl,
   images,
-  playing,
-  setPlaying,
-  video,
-  setVideo,
-  videos,
-  cover,
-  notes,
-  have,
-  want,
-  playingRef,
-  id,
-  numberAvailable,
-  lowestPrice,
+  artists,
+  formats,
+  country,
+  year,
   genres,
   styles,
+  marketUrl,
+  videos,
+  notes,
+  cover,
+  numberAvailable,
+  lowestPrice,
 }) {
+  const artistList = !!artists && commaList(artists.map(({ name }) => name));
   const firstFormat = !!formats && formats.length > 0 && formats[0];
-  console.log(firstFormat.name, firstFormat.descriptions);
-  const genresList =
-    !!genres &&
-    genres.length > 0 &&
-    genres.map((genre) => genre).map(commaList);
   return (
     <StyledWantCard>
-      <StyledNavbar>
-        <Navbar />
-      </StyledNavbar>
-      <StyledCardMedia>
-        {!!images &&
-          images.length > 0 &&
-          images.map(({ uri }) => <img key={uri} src={uri} alt="want cover" />)}
-      </StyledCardMedia>
+      <StyledNavbarWrapper>
+        <Navbar release/>
+      </StyledNavbarWrapper>
+      <ImageSlider images={images} />
       <StyledCardBody>
-        <h3>
-          <span>{`${title}`}</span>
-        </h3>
-        <h4>{artists.map(({ name }) => name).map(commaList)}</h4>
-
+        <h3>{title}</h3>
+        <h4>{artistList}</h4>
+        <Format {...firstFormat} />
         <InfoItem label="Country" value={country} />
         <InfoItem label="Year" value={year} />
-        <InfoItem label="Genres" value={genresList} />
+        <InfoItem label="Genres" value={commaList(genres)} />
+        <InfoItem label="Styles" value={commaList(styles)} />
       </StyledCardBody>
       {!!marketUrl && (
         <StyledMarketLink
