@@ -36,6 +36,7 @@ const StyledWantCard = styled.div`
   @media (min-width: 1070px) {
     position: relative;
     padding: 0;
+    padding-bottom: 24px;
     width: 100%;
   }
 `;
