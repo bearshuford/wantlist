@@ -11,12 +11,12 @@ const SidebarMixin = css`
     margin: 0;
     margin-right: 24px;
     flex-shrink: 0;
-    overflow-y: scroll;
+    overflow-y: auto;
     height: calc(100vh - 143px);
+  }
 
-    @media (min-width: 1400px) {
-      margin-right: 84px;
-    }
+  @media (min-width: 1400px) {
+    margin-right: 84px;
   }
 `;
 

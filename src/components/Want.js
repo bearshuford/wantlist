@@ -19,6 +19,7 @@ const MARGIN_RIGHT = {
   lg: 20,
 };
 
+
 const StyledWantCard = styled.div`
   background: white;
   position: fixed;
@@ -124,7 +125,6 @@ const StyledCardBody = styled.div`
 
 const StyledMarketLink = styled.a``;
 
-const StyledCommunity = styled.div``;
 
 const StyledNavbar = styled.div`
   @media (min-width: 1070px) {
