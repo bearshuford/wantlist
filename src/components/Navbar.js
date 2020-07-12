@@ -56,16 +56,19 @@ const StyledNavbar = styled.div`
 
 const StyledCloseButton = styled(Link)`
   position: fixed;
-  top: 16px;
-  right: 24px;
+  background: white;
+  top: 8px;
+  right: 8px;
+  padding: 8px 16px;
   font-size: 34px;
   font-weight: 900;
   text-decoration: none;
   color: #000;
 
   @media (min-width: 768px) {
-    right: 42px;
-    top: 32px;
+    top: 28px;
+    right: 20px;
+    padding: 2px 22px;
     font-size: 42px;
   }
 `;

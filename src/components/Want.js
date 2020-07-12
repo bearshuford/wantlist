@@ -27,11 +27,11 @@ const StyledWantCard = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 18px 0 18px 18px;
+  padding: 18px 0 ${(props) => props.player ? (18 + 96) : 18}px 18px;
   overflow-y: auto;
 
   @media (min-width: 768px) {
-    padding: 20px 0 18px 40px;
+    padding: 20px 0 ${(props) => props.player ? (18 + 96) : 18}px 40px;
   }
 
   @media (min-width: 1070px) {
@@ -210,7 +210,7 @@ function Want({
     !!playing && !!videos && videos.length > 0 && video.uri === videos[0].uri;
 
   return (
-    <StyledWantCard>
+    <StyledWantCard player={!!video} >
       <Navbar release />
       <ImageSlider images={images} />
       <StyledCardBody>
