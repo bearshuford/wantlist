@@ -176,11 +176,11 @@ function Want({
   genres,
   styles,
   marketUrl,
+  numberAvailable,
+  lowestPrice,
   videos,
   notes,
   cover,
-  numberAvailable,
-  lowestPrice,
 }) {
   const artistList = !!artists && commaList(artists.map(({ name }) => name));
   const firstFormat = !!formats && formats.length > 0 && formats[0];
@@ -199,10 +199,15 @@ function Want({
           <InfoItem label="Styles" value={commaList(styles)} />
         </StyledInfoWrapper>
       </StyledCardBody>
-      {!!marketUrl && (
+      {!!numberAvailable && numberAvailable > 0 ? (
         <StyledMarketLink
           href={marketUrl}
-        >{`Check marketplace`}</StyledMarketLink>
+        >{`${numberAvailable} for sale from $${lowestPrice.toFixed(2)}`}</StyledMarketLink>
+      ) : (
+        <StyledMarketLink
+          href={marketUrl}
+          disabled
+        >{`None available in discogs marketplace`}</StyledMarketLink>
       )}
     </StyledWantCard>
   );

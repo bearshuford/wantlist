@@ -4,7 +4,7 @@ const token = process.env.DISCOGS_TOKEN;
 
 const endpoints = {
   master: (id) => `https://api.discogs.com/masters/${id}?token=${token}`,
-  release: (id) => `https://api.discogs.com/releases/${id}?token=${token}`,
+  release: (id) => `https://api.discogs.com/releases/${id}?token=${token}&curr_abbr=USD`,
   marketplace: (id) => `https://discogs.com/sell/release/${id}`,
   wantlist: (username) =>
     `https://api.discogs.com/users/${username}/wants?token=${token}`,
@@ -23,6 +23,7 @@ const parseWants = async (item) => {
       const { have, want } = release.community || {};
       const info = {
         numberAvailable: release.num_for_sale,
+        lowestPrice: release.lowest_price,
         images: release.images,
         videos: release.videos,
         notes: release.notes,
