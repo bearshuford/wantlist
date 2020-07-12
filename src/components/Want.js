@@ -98,6 +98,7 @@ const StyledCardBody = styled.div`
     h3 {
       font-size: 38px;
       margin-bottom: 2px;
+      max-width: 80%;
     }
     h4 {
       font-size: 24px;
@@ -108,6 +109,10 @@ const StyledCardBody = styled.div`
   @media (min-width: 1070px) {
     max-width: 600px;
     margin-bottom: 3px;
+
+    h3 {
+      max-width: unset;
+    }
   }
 
   @media (min-width: 1400px) {
