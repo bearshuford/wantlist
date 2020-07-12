@@ -88,9 +88,11 @@ const StyledCardBody = styled.div`
   }
 
   padding-bottom: 48px;
+  padding-right: 18px;
 
   @media (min-width: 768px) {
     padding-bottom: 44px;
+    padding-right: 40px;
 
     h3 {
       font-size: 38px;
@@ -124,6 +126,14 @@ const StyledMarketLink = styled.a`
   font-size: 26px;
 `;
 
+const StyledInfoWrapper = styled.div`
+  @media (min-width: 1070px) {
+    display: flex;
+    flex-flow: column wrap;
+    flex-shrink: 1;
+  }
+`;
+
 const Info = styled.div`
   font-size: 18px;
   margin-bottom: 4px;
@@ -135,7 +145,7 @@ const commaList = (array) => {
 };
 
 const Format = ({ name, descriptions }) => (
-  <Info>{`${name} | ${commaList(descriptions)}`}</Info>
+  <Info>{`${name}, ${commaList(descriptions)}`}</Info>
 );
 
 const InfoItem = ({ label, value }) =>
@@ -181,10 +191,12 @@ function Want({
         <h3>{title}</h3>
         <h4>{artistList}</h4>
         <Format {...firstFormat} />
-        <InfoItem label="Country" value={country} />
-        <InfoItem label="Year" value={year} />
-        <InfoItem label="Genres" value={commaList(genres)} />
-        <InfoItem label="Styles" value={commaList(styles)} />
+        <StyledInfoWrapper>
+          <InfoItem label="Country" value={country} />
+          <InfoItem label="Year" value={year} />
+          <InfoItem label="Genres" value={commaList(genres)} />
+          <InfoItem label="Styles" value={commaList(styles)} />
+        </StyledInfoWrapper>
       </StyledCardBody>
       {!!marketUrl && (
         <StyledMarketLink

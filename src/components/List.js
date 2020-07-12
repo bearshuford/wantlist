@@ -7,17 +7,24 @@ const SidebarMixin = css`
   @media (min-width: 1070px) {
     display: flex;
     width: 325px;
-    border-right: 1px solid #949494;
     margin: 0;
-    margin-right: 24px;
-    flex-shrink: 0;
-    overflow-y: auto;
-    height: calc(100vh - 143px);
+    max-width: unset;
   }
+`;
 
-  @media (min-width: 1400px) {
-    margin-right: 84px;
-  }
+const StyledListWrapper = styled.div`
+  ${(props) =>
+    props.sidebar &&
+    css`
+      overflow-y: auto;
+      margin-right: 24px;
+      border-right: 1px solid #949494;
+      flex-shrink: 0;
+
+      @media (min-width: 1400px) {
+        margin-right: 84px;
+      }
+    `}
 `;
 
 const StyledList = styled.div`
@@ -28,7 +35,6 @@ const StyledList = styled.div`
     display: grid;
     grid-gap: 52px 57px;
     grid-template-columns: repeat(3, 1fr);
-    /* grid-template-columns: repeat(auto-fit, minmax(186px, 1fr)); */
   }
 
   @media (min-width: 1070px) {
@@ -38,7 +44,6 @@ const StyledList = styled.div`
     max-width: calc(100% - 80px);
     width: 100%;
     grid-template-columns: repeat(4, 1fr);
-    /* grid-template-columns: repeat(auto-fit, minmax(186px, 1fr)); */
   }
 
   @media (min-width: 1400px) {
@@ -60,11 +65,17 @@ function List({ releaseId, wantlist, loading, error }) {
   if (!!loading) return <Loading />;
 
   return (
-    <StyledList sidebar={!!releaseId}>
-      {wantlist.map((item) => (
-        <WantlistItem {...item} key={item.id} hasSeletion={!!releaseId} />
-      ))}
-    </StyledList>
+    <StyledListWrapper sidebar={!!releaseId}>
+      <StyledList sidebar={!!releaseId}>
+        {wantlist.map((item) => (
+          <WantlistItem
+            {...item}
+            key={item.id}
+            active={(releaseId === "" + item.id) ? "true" : undefined}
+          />
+        ))}
+      </StyledList>
+    </StyledListWrapper>
   );
 }
 

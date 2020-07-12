@@ -9,6 +9,7 @@ const SidebarWantlist = css`
   @media (min-width: 1070px) {
     display: flex;
     flex-flow: row nowrap;
+    height: calc(100% - 81px);
   }
 `;
 

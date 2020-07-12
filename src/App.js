@@ -6,6 +6,8 @@ import { createGlobalStyle } from "styled-components";
 import { Wantlist, Search, Navbar } from "./components";
 
 const GlobalStyle = createGlobalStyle`
+  html, body, #root {height:100%;}
+
   body {
     font-family: 'Roboto', sans-serif;
     margin: 0;
@@ -22,13 +24,14 @@ const StyledApp = styled.div`
   margin: 0 auto;
   padding: 18px;
   padding-bottom: 0;
+  height: 100%;
 
   @media (min-width: 768px) {
     padding: 32px 40px 0;
   }
 
   @media (min-width: 1024px) {
-    padding: 42px 76px 0;
+    padding: 32px 76px 0;
   }
 `;
 

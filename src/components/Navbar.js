@@ -21,7 +21,7 @@ const StyledNavbar = styled.div`
   flex-flow: row nowrap;
   justify-content: space-between;
   align-items: center;
-  margin: 16px 0 44px;
+  margin: 16px 0 34px;
 
   h1 {
     display: block;
@@ -56,9 +56,9 @@ const StyledNavbar = styled.div`
 
 const StyledCloseButton = styled(Link)`
   position: fixed;
-  top: 22px;
+  top: 16px;
   right: 24px;
-  font-size: 28px;
+  font-size: 34px;
   font-weight: 900;
   text-decoration: none;
   color: #000;
