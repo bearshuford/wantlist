@@ -25,13 +25,12 @@ const StyledCard = styled(NavLink)`
   ${(props) => props.sidebar && SidebarCard}
 
   &.active:before {
-      @media (min-width: 1070px) {
-        content: "\\279E";
-        position: absolute;
-        font-size: 28px;
-        top: calc(50% - 20px);
-        right: 16px;
-      }
+    @media (min-width: 1070px) {
+      content: "\\279E";
+      position: absolute;
+      font-size: 28px;
+      top: calc(50% - 20px);
+      right: 16px;
     }
   }
 `;

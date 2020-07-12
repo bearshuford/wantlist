@@ -3,7 +3,8 @@ import styled from "styled-components";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
 
-import { Wantlist, Search, Navbar } from "./components";
+import PlayerContext from "./PlayerContext";
+import { Wantlist, Search, Navbar, Player } from "./components";
 
 const GlobalStyle = createGlobalStyle`
   html, body, #root {height:100%;}
@@ -37,17 +38,20 @@ const StyledApp = styled.div`
 
 function App() {
   return (
-    <StyledApp>
-      <GlobalStyle />
-      <Router>
-        <Navbar />
-        <Switch>
-          <Route path="/" exact component={Search} />
-          <Route path="/:username/:releaseId" component={Wantlist} exact />
-          <Route path="/:username" component={Wantlist} exact />
-        </Switch>
-      </Router>
-    </StyledApp>
+    <PlayerContext>
+      <StyledApp>
+        <GlobalStyle />
+        <Router>
+          <Player />
+          <Navbar />
+          <Switch>
+            <Route path="/" exact component={Search} />
+            <Route path="/:username/:releaseId" component={Wantlist} exact />
+            <Route path="/:username" component={Wantlist} exact />
+          </Switch>
+        </Router>
+      </StyledApp>
+    </PlayerContext>
   );
 }
 

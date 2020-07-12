@@ -2,7 +2,7 @@ import Want from "./Want";
 import List from "./List";
 import Wantlist from "./Wantlist";
 import WantlistItem from "./WantlistItem";
-import Playlist from "./Playlist";
+import Player from "./Player";
 import Controls from "./Controls";
 import Search from "./Search";
 import Navbar from "./Navbar";
@@ -14,7 +14,7 @@ export {
   List,
   Wantlist,
   WantlistItem,
-  Playlist,
+  Player,
   Controls,
   Search,
   Navbar,

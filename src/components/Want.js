@@ -1,7 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import styled from "styled-components";
 
 import Navbar from "./Navbar";
+import { PlayerContext } from "../PlayerContext";
 
 const IMAGE_HEIGHT = {
   sm: 134,
@@ -132,6 +133,19 @@ const StyledMarketLink = styled.a`
   font-size: 26px;
 `;
 
+const StyledMarketButton = styled.button`
+  font-size: 26px;
+  display: block;
+  margin-bottom: 24px;
+  padding: 12px 16px;
+
+  @media (min-width: 768px) {
+    display: inline-block;
+    margin-right: 48px;
+    margin-bottom: 0;
+  }
+`;
+
 const StyledInfoWrapper = styled.div`
   @media (min-width: 1070px) {
     display: flex;
@@ -187,8 +201,14 @@ function Want({
   notes,
   cover,
 }) {
+  const { playing, setPlaying, video, setVideo } = useContext(PlayerContext);
+
   const artistList = !!artists && commaList(artists.map(({ name }) => name));
   const firstFormat = !!formats && formats.length > 0 && formats[0];
+
+  const isPlaying =
+    !!playing && !!videos && videos.length > 0 && video.uri === videos[0].uri;
+
   return (
     <StyledWantCard>
       <Navbar release />
@@ -204,16 +224,39 @@ function Want({
           <InfoItem label="Styles" value={commaList(styles)} />
         </StyledInfoWrapper>
       </StyledCardBody>
-      {!!numberAvailable && numberAvailable > 0 ? (
-        <StyledMarketLink
-          href={marketUrl}
-        >{`${numberAvailable} for sale from $${lowestPrice.toFixed(2)}`}</StyledMarketLink>
-      ) : (
-        <StyledMarketLink
-          href={marketUrl}
-          disabled
-        >{`None available in discogs marketplace`}</StyledMarketLink>
-      )}
+      <div>
+        {!!videos &&
+          videos.length > 0 &&
+          (isPlaying ? (
+            <StyledMarketButton
+              onClick={() => {
+                setPlaying(false);
+              }}
+            >
+              Pause
+            </StyledMarketButton>
+          ) : (
+            <StyledMarketButton
+              onClick={() => {
+                if (video.uri !== videos[0].uri) setVideo(videos[0]);
+                setPlaying(true);
+              }}
+            >
+              Listen
+            </StyledMarketButton>
+          ))}
+        {!!numberAvailable && numberAvailable > 0 ? (
+          <StyledMarketLink
+            href={marketUrl}
+          >{`${numberAvailable} for sale from $${lowestPrice.toFixed(
+            2
+          )}`}</StyledMarketLink>
+        ) : (
+          <StyledMarketLink
+            href={marketUrl}
+          >{`Check marketplace`}</StyledMarketLink>
+        )}
+      </div>
     </StyledWantCard>
   );
 }
