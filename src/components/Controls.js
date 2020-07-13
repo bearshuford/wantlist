@@ -13,7 +13,7 @@ const StyledControls = styled.div`
   left: 0;
   border-top: 2px;
   z-index: 2;
-  height: 96px;
+  height: 75px;
   align-items: center;
   background-color: white;
   padding: 0 18px;
@@ -35,7 +35,7 @@ const StyledTitle = styled.h4`
 `;
 
 const StyledPlayPause = styled.button`
-  height: 96px;
+  height: 75px;
   background: none;
   border: none;
   outline: none;

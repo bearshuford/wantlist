@@ -6,19 +6,19 @@ import { PlayerContext } from "../PlayerContext";
 import { List, Want } from "./";
 import { useWantlist } from "../hooks";
 
-const PLAYER_HEIGHT = 96;
+const PLAYER_HEIGHT = 75;
 
 const SidebarWantlist = css`
   @media (min-width: 1070px) {
     display: flex;
     flex-flow: row nowrap;
-    height: calc(
-      100% - ${(props) => (props.player ? 81 + PLAYER_HEIGHT : 81)}px
-    );
+    height: calc(100% - 81px);
+    padding-bottom: 0;
   }
 `;
 
 const StyledWantlist = styled.div`
+  padding-bottom: ${(props) => (props.player ? PLAYER_HEIGHT : 0)}px;
   ${(props) => props.sidebar && SidebarWantlist}
 `;
 
@@ -29,7 +29,6 @@ function Wantlist() {
     wantlist,
     status: { loading, error },
   } = useWantlist(username);
-
 
   const release =
     !!wantlist &&

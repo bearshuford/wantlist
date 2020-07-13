@@ -14,13 +14,32 @@ const StyledControls = styled.div`
   bottom: 0;
   right: 0;
   left: 0;
-  border-top: 2px;
   z-index: 2;
-  height: 96px;
+  height: 75px;
   align-items: center;
   background-color: white;
   padding: 0 18px;
   border-top: 4px solid violet;
+
+
+  @media(min-width: 1024px) {
+    left: unset;
+    width: 352px;
+    right: 72px;
+    border-left: 4px solid violet;
+    border-right: 4px solid violet;
+  }
+
+  @media(min-width: 1400px) {
+    right: 76px;
+    width: 360px;
+  }
+
+  @media(min-width: 1800px) {
+    right: 28%;
+    width: 380px;
+  }
+
 `;
 
 const StyledTumbnail = styled.img`
@@ -38,7 +57,7 @@ const StyledTitle = styled.h4`
 `;
 
 const StyledPlayPause = styled.button`
-  height: 96px;
+  height: 75px;
   background: none;
   border: none;
   outline: none;
@@ -48,7 +67,11 @@ const StyledPlayPause = styled.button`
   text-align: right;
   flex: 1;
   margin-left: 18px;
-  margin-right: 28px;
+  margin-right: 24px;
+
+  @media(min-width: 1024px) {
+    margin-right: 12px;
+  }
 
   ${(props) =>
     props.isPlaying &&

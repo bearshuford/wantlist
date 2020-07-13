@@ -27,17 +27,17 @@ const StyledWantCard = styled.div`
   left: 0;
   right: 0;
   bottom: 0;
-  padding: 18px 0 ${(props) => props.player ? (18 + 96) : 18}px 18px;
+  padding: 18px 0 ${(props) => props.player ? (18 + 75) : 18}px 18px;
   overflow-y: auto;
 
   @media (min-width: 768px) {
-    padding: 20px 0 ${(props) => props.player ? (18 + 96) : 18}px 40px;
+    padding: 20px 0 ${(props) => props.player ? (18 + 75) : 18}px 40px;
   }
 
   @media (min-width: 1070px) {
     position: relative;
     padding: 0;
-    padding-bottom: 24px;
+    padding-bottom: ${(props) => props.player ? (24 + 75) : 24}px;
     width: 100%;
   }
 `;
@@ -93,7 +93,7 @@ const StyledCardBody = styled.div`
   padding-right: 18px;
 
   @media (min-width: 768px) {
-    padding-bottom: 44px;
+    padding-bottom: 40px;
     padding-right: 40px;
 
     h3 {
@@ -110,6 +110,7 @@ const StyledCardBody = styled.div`
   @media (min-width: 1070px) {
     max-width: 600px;
     margin-bottom: 3px;
+    padding-bottom: 34px;
 
     h3 {
       max-width: unset;
