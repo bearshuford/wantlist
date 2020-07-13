@@ -25,7 +25,7 @@ const StyledControls = styled.div`
   @media(min-width: 1024px) {
     left: unset;
     width: 352px;
-    right: 72px;
+    right: 28px;
     border-left: 4px solid violet;
     border-right: 4px solid violet;
   }

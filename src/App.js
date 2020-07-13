@@ -32,7 +32,7 @@ const StyledApp = styled.div`
   }
 
   @media (min-width: 1024px) {
-    padding: 32px 76px 0;
+    padding: 8px 76px 0;
   }
 `;
 
