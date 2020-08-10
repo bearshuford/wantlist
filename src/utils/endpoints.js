@@ -1,6 +1,8 @@
 const endpoints = {
-  release: (id) => `https://api.discogs.com/masters/${id}`,
-  wantlist: (username) => `https://api.discogs.com/users/${username}/wants`,
+  release: (id) => `/.netlify/functions/getRelease?releaseId=${id}`,
+  recs: (id) => `/.netlify/functions/getRecs?releaseId=${id}`,
+  wantlist: (username) =>
+    `/.netlify/functions/getWantlist?username=${username}`,
 };
 
 export default endpoints;

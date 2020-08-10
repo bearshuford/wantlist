@@ -16,6 +16,11 @@ const ReleaseMixin = css`
   }
 `;
 
+const StyledHeaderLink = styled(Link)`
+  text-decoration: none;
+  color: #000;
+`;
+
 const StyledNavbar = styled.div`
   display: flex;
   flex-flow: row nowrap;
@@ -79,20 +84,26 @@ const CloseButton = ({ to }) => (
   </StyledCloseButton>
 );
 
-function Navbar({ release }) {
+function Navbar() {
   const match = useRouteMatch({
     path: "/:username",
     strict: true,
     sensitive: true,
   });
 
-  const { username } = !!match ? match.params : {};
+  const { username, releaseId } = !!match ? match.params : {};
 
   return (
-    <StyledNavbar release={!!release}>
-      {!!release ? <CloseButton to={`/${username}`} /> : <h1>wantlist</h1>}
-      {!!username && !release && (
-        <Link to="/" title="back to search">
+    <StyledNavbar>
+      {!username ? (
+        <h1>wantlist</h1>
+      ) : (
+        <h1>
+          <StyledHeaderLink to={`/${username}`}>wantlist</StyledHeaderLink>
+        </h1>
+      )}
+      {!!username && (
+        <Link to={!releaseId ? '/' : `/${username}`} title="back to search">
           {username}
         </Link>
       )}

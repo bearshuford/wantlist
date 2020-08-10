@@ -15,33 +15,8 @@ const options = {
 };
 
 const parseWants = async (item) => {
-
-  const getRelease = async (id) => {
-    try {
-      let request = await fetch(endpoints.release(id), options);
-      let release = await request.json();
-      const { have, want } = release.community || {};
-      const info = {
-        numberAvailable: release.num_for_sale,
-        lowestPrice: release.lowest_price,
-        images: release.images,
-        videos: release.videos,
-        notes: release.notes,
-        country: release.country,
-        artistsSort: release.artists_sort,
-        formats: release.formats,
-        have,
-        want,
-      };
-      return info;
-    } catch (error) {
-      throw error;
-    }
-  };
-
   const info = item.basic_information;
-  const want = {
-    videos: [],
+  return {
     id: item.id,
     marketUrl: endpoints.marketplace(item.id),
     masterId: info.master_id,
@@ -59,18 +34,6 @@ const parseWants = async (item) => {
       };
     }),
   };
-
-  try {
-    const releaseInfo = await getRelease(info.id);
-    return {
-      ...want,
-      ...releaseInfo,
-    };
-  } catch (error) {
-    //TODO: error handling
-    console.log("error gettingrelease", error);
-    return want;
-  }
 };
 
 exports.handler = async (event) => {

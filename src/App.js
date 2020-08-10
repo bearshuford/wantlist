@@ -2,9 +2,11 @@ import React from "react";
 import styled from "styled-components";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { createGlobalStyle } from "styled-components";
+import { SWRConfig } from "swr";
 
 import PlayerContext from "./PlayerContext";
-import { Wantlist, Search, Navbar, Player } from "./components";
+import { Wantlist, Search, Navbar, Player, WantWrapper } from "./components";
+import { fetcher } from "./utils";
 
 const GlobalStyle = createGlobalStyle`
   html, body, #root {height:100%;}
@@ -23,7 +25,7 @@ const GlobalStyle = createGlobalStyle`
 const StyledApp = styled.div`
   max-width: 2000px;
   margin: 0 auto;
-  padding: 18px;
+  padding: 0 18px;
   padding-bottom: 0;
   height: 100%;
 
@@ -38,20 +40,26 @@ const StyledApp = styled.div`
 
 function App() {
   return (
-    <PlayerContext>
-      <StyledApp>
-        <GlobalStyle />
-        <Router>
-          <Player />
-          <Navbar />
-          <Switch>
-            <Route path="/" exact component={Search} />
-            <Route path="/:username/:releaseId" component={Wantlist} exact />
-            <Route path="/:username" component={Wantlist} exact />
-          </Switch>
-        </Router>
-      </StyledApp>
-    </PlayerContext>
+    <SWRConfig value={{ fetcher }}>
+      <PlayerContext>
+        <StyledApp>
+          <GlobalStyle />
+          <Router>
+            <Player />
+            <Navbar />
+            <Switch>
+              <Route
+                path="/:username/:releaseId"
+                component={WantWrapper}
+                exact
+              />
+              <Route path="/:username" component={Wantlist} exact />
+              <Route path="/" exact component={Search} />
+            </Switch>
+          </Router>
+        </StyledApp>
+      </PlayerContext>
+    </SWRConfig>
   );
 }
 

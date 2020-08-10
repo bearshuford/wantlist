@@ -1,8 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-import Navbar from "./Navbar";
-import { PlayerContext } from "../PlayerContext";
+// import WantlistItem from "./WantlistItem";
 
 const IMAGE_HEIGHT = {
   sm: 134,
@@ -21,23 +21,14 @@ const MARGIN_RIGHT = {
 };
 
 const StyledWantCard = styled.div`
-  background: white;
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  padding: 18px 0 ${(props) => props.player ? (18 + 75) : 18}px 18px;
-  overflow-y: auto;
-
   @media (min-width: 768px) {
-    padding: 20px 0 ${(props) => props.player ? (18 + 75) : 18}px 40px;
+    padding: 0 0 ${(props) => (props.player ? 18 + 75 : 18)}px;
   }
 
   @media (min-width: 1070px) {
     position: relative;
     padding: 0;
-    padding-bottom: ${(props) => props.player ? (24 + 75) : 24}px;
+    padding-bottom: ${(props) => (props.player ? 24 + 75 : 24)}px;
     width: 100%;
   }
 `;
@@ -130,7 +121,13 @@ const StyledCardBody = styled.div`
   }
 `;
 
-const StyledMarketLink = styled.a`
+const StyledMarketAnchor = styled.a`
+  font-size: 26px;
+`;
+
+const StyledMarketLink = styled(Link)`
+  margin-top: 24px;
+  display: block;
   font-size: 26px;
 `;
 
@@ -165,9 +162,9 @@ const commaList = (array) => {
   else return null;
 };
 
-const Format = ({ name, descriptions }) => (
-  <Info>{`${name}, ${commaList(descriptions)}`}</Info>
-);
+// const Format = ({ name, descriptions }) => (
+//   <Info>{`${name}, ${commaList(descriptions)}`}</Info>
+// );
 
 const InfoItem = ({ label, value }) =>
   !!value && (
@@ -186,24 +183,36 @@ const ImageSlider = ({ images }) => (
   </StyledImageSlider>
 );
 
+const parseAnchor = (anchor) => {
+  return anchor.split("/release/").pop().split("?")[0];
+};
+
 function Want({
+  releaseId,
+  username,
   title,
-  images,
   artists,
+  images,
+  videos,
+  cover,
+  masterId,
+  artistsSort,
   formats,
   country,
   year,
-  genres,
   styles,
   marketUrl,
   numberAvailable,
   lowestPrice,
-  videos,
+  genres,
+  released,
+  releasedFormatted,
   notes,
-  cover,
+  playing,
+  setPlaying,
+  video,
+  setVideo,
 }) {
-  const { playing, setPlaying, video, setVideo } = useContext(PlayerContext);
-
   const artistList = !!artists && commaList(artists.map(({ name }) => name));
   const firstFormat = !!formats && formats.length > 0 && formats[0];
 
@@ -211,13 +220,12 @@ function Want({
     !!playing && !!videos && videos.length > 0 && video.uri === videos[0].uri;
 
   return (
-    <StyledWantCard player={!!video} >
-      <Navbar release />
+    <StyledWantCard player={!!video}>
       <ImageSlider images={images} />
       <StyledCardBody>
         <h3>{title}</h3>
         <h4>{artistList}</h4>
-        <Format {...firstFormat} />
+        <Info>{firstFormat}</Info>
         <StyledInfoWrapper>
           <InfoItem label="Country" value={country} />
           <InfoItem label="Year" value={year} />
@@ -247,17 +255,34 @@ function Want({
             </StyledMarketButton>
           ))}
         {!!numberAvailable && numberAvailable > 0 ? (
-          <StyledMarketLink
+          <StyledMarketAnchor
             href={marketUrl}
           >{`${numberAvailable} for sale from $${lowestPrice.toFixed(
             2
-          )}`}</StyledMarketLink>
+          )}`}</StyledMarketAnchor>
         ) : (
-          <StyledMarketLink
+          <StyledMarketAnchor
             href={marketUrl}
-          >{`Check marketplace`}</StyledMarketLink>
+          >{`Check marketplace`}</StyledMarketAnchor>
         )}
+        {/* {!!masterId && masterId + "" !== releaseId + "" && (
+          <StyledMarketLink to={`/${username}/${masterId}`}>
+            Go to master release
+          </StyledMarketLink>
+        )} */}
       </div>
+      {/* {!!recommendations && (
+        <StyledImageSlider>
+          {recommendations.map(({ anchor, title, artist, thumbnail }) => (
+            <WantlistItem
+              id={parseAnchor(anchor)}
+              title={title}
+              artists={[artist]}
+              cover={thumbnail}
+            />
+          ))}
+        </StyledImageSlider>
+      )} */}
     </StyledWantCard>
   );
 }
