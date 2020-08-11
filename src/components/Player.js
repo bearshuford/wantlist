@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import styled, { css } from "styled-components";
 import ReactPlayer from "react-player";
 
@@ -6,8 +6,6 @@ import { PlayerContext } from "../PlayerContext";
 
 const PlayIcon = () => <>&#x25ba;&#xfe0e;</>;
 const PauseIcon = () => <>&#9612;&#9612;</>;
-const DownIcon = () => <>&bigtriangledown;</>;
-const UpIcon = () => <>&bigtriangleup;</>;
 
 const StyledControls = styled.div`
   display: ${(props) => (props.hasVideo ? "flex" : "none")};
@@ -41,14 +39,14 @@ const StyledControls = styled.div`
   }
 `;
 
-const StyledCollapseButton = styled.button`
-  background: transparent;
-  padding: 4px;
-  font-size: 20px;
-  margin: 0 18px 0 0;
-  border: none;
-  box-shadow: none;
-`;
+// const StyledCollapseButton = styled.button`
+//   background: transparent;
+//   padding: 4px;
+//   font-size: 20px;
+//   margin: 0 18px 0 0;
+//   border: none;
+//   box-shadow: none;
+// `;
 
 const StyledTitle = styled.h4`
   overflow: hidden;
@@ -88,15 +86,15 @@ const StyledIframeWrapper = styled.div`
 
 function Player() {
   const { playing, setPlaying, video } = useContext(PlayerContext);
-  const [collapsed, setCollapsed] = useState(true);
+  // const [collapsed, setCollapsed] = useState(true);
 
   const togglePlayPause = () => {
     setPlaying(!playing);
   };
 
-  const toggleCollpased = () => {
-    setCollapsed(!collapsed);
-  };
+  // const toggleCollpased = () => {
+  //   setCollapsed(!collapsed);
+  // };
 
   return (
     <>

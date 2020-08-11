@@ -251,7 +251,7 @@ function Want({
 }) {
   const artistList = !!artists && commaList(artists.map(({ name }) => name));
   const formatList = !!formats && commaList(formats);
-  const firstFormat = !!formats && formats.length > 0 && formats[0];
+  // const firstFormat = !!formats && formats.length > 0 && formats[0];
   const isPlaying =
     !!playing && !!videos && videos.length > 0 && video.uri === videos[0].uri;
 
