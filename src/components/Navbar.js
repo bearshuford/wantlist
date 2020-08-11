@@ -59,31 +59,6 @@ const StyledNavbar = styled.div`
   ${(props) => props.release && ReleaseMixin}
 `;
 
-const StyledCloseButton = styled(Link)`
-  position: fixed;
-  background: white;
-  top: 8px;
-  right: 8px;
-  padding: 8px 16px;
-  font-size: 34px;
-  font-weight: 900;
-  text-decoration: none;
-  color: #000;
-
-  @media (min-width: 768px) {
-    top: 28px;
-    right: 20px;
-    padding: 2px 22px;
-    font-size: 42px;
-  }
-`;
-
-const CloseButton = ({ to }) => (
-  <StyledCloseButton to={to} title="close">
-    &#10005;
-  </StyledCloseButton>
-);
-
 function Navbar() {
   const match = useRouteMatch({
     path: "/:username",
