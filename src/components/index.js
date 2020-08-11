@@ -9,6 +9,7 @@ import Search from "./Search";
 import Navbar from "./Navbar";
 import Loading from "./Loading";
 import Error from "./Error";
+import Recs from "./Recs";
 
 export {
   Want,
@@ -22,4 +23,5 @@ export {
   Navbar,
   Loading,
   Error,
+  Recs,
 };

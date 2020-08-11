@@ -1,26 +1,34 @@
 import fetch from "node-fetch";
 import cheerio from "cheerio";
 
+const endpoints = {
+  release: (releaseId) => `https://www.discogs.com/release/${releaseId}`,
+  master: (masterId) => `https://www.discogs.com/master/view/${masterId}`,
+};
+
+const options = {
+  headers: {
+    accept: "application/json",
+    "accept-encoding": "text/html",
+    "content-type": "application/json",
+    "user-agent": "NodeDiscogs/0.1",
+  },
+};
+
 exports.handler = async (event) => {
   if (event.httpMethod !== "GET")
     return { statusCode: 405, body: "Method Not Allowed" };
 
-  const { releaseId } = event.queryStringParameters;
-  const endpoint = (releaseId) =>
-    `https://www.discogs.com/release/${releaseId}`;
+  const { releaseId, masterId } = event.queryStringParameters;
+
+  const id = !!releaseId ? releaseId : masterId;
+  const endpoint = !!masterId ? endpoints.master(id) : endpoints.release(id);
 
   try {
-    let response = await fetch(endpoint(releaseId), {
-      headers: {
-        accept: "application/json",
-        "accept-encoding": "text/html",
-        "content-type": "application/json",
-        "user-agent": "NodeDiscogs/0.1",
-      },
-    });
+    let response = await fetch(endpoint, options);
     let res = await response.text();
     const $ = cheerio.load(res);
-
+    
     let recommendations = $("#recs_slider").html().toString();
     recommendations = recommendations
       .replace("<!--lazy", "")

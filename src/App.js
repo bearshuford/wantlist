@@ -48,6 +48,7 @@ function App() {
             <Player />
             <Navbar />
             <Switch>
+              <Route path="/master/:masterId" component={WantWrapper} exact />
               <Route
                 path="/:username/:releaseId"
                 component={WantWrapper}

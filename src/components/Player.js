@@ -101,9 +101,9 @@ function Player() {
   return (
     <>
       <StyledControls hasVideo={!!video}>
-        <StyledCollapseButton onClick={toggleCollpased}>
+        {/* <StyledCollapseButton onClick={toggleCollpased}>
           {collapsed ? <DownIcon /> : <UpIcon />}
-        </StyledCollapseButton>
+        </StyledCollapseButton> */}
         <StyledTitle>{video.title}</StyledTitle>
         <StyledPlayPause onClick={togglePlayPause} isPlaying={playing}>
           {!!playing ? <PauseIcon /> : <PlayIcon />}

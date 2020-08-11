@@ -3,22 +3,28 @@ import fetch from "node-fetch";
 const token = process.env.DISCOGS_TOKEN;
 
 const endpoints = {
-  master: (id) => `https://api.discogs.com/masters/${id}?token=${token}`,
-  release: (id) =>
-    `https://api.discogs.com/releases/${id}?token=${token}&curr_abbr=USD`,
-  marketplace: (id) => `https://discogs.com/sell/release/${id}`,
   wantlist: (username) =>
     `https://api.discogs.com/users/${username}/wants?token=${token}`,
+  release: (id) =>
+    `https://api.discogs.com/releases/${id}?token=${token}&curr_abbr=USD`,
+  marketplace: (id, master) =>{
+    if(!master) return `https://discogs.com/sell/release/${id}`;
+    return `https://discogs.com/sell/list?master_id=${id}`
+  },
+  master: (id) => `https://api.discogs.com/masters/${id}?token=${token}`,
 };
 
 const options = {
   headers: { "user-agent": "wantlist" },
 };
 
-const getRelease = async (id) => {
+const getRelease = async (releaseId, masterId) => {
+  const id = !!releaseId ? releaseId : masterId;
+  const endpoint = !!masterId ? endpoints.master(id) : endpoints.release(id);
   try {
-    let request = await fetch(endpoints.release(id), options);
+    let request = await fetch(endpoint, options);
     let release = await request.json();
+
     const { have, want } = release.community || {};
     const info = {
       title: release.title,
@@ -30,12 +36,12 @@ const getRelease = async (id) => {
       }),
       artistsSort: release.artists_sort,
       genres: release.genres,
-      formats: release.formats.map((format) => format.name),
+      formats: release.formats && release.formats.map((format) => format.name),
       images: release.images,
       videos: release.videos,
       cover: release.thumb,
       masterId: release.master_id,
-      marketUrl: endpoints.marketplace(id),
+      marketUrl: endpoints.marketplace(id, !!masterId),
       numberAvailable: release.num_for_sale,
       lowestPrice: release.lowest_price,
       notes: release.notes,
@@ -56,10 +62,10 @@ exports.handler = async (event) => {
   if (event.httpMethod !== "GET")
     return { statusCode: 405, body: "Method Not Allowed" };
 
-  const { releaseId } = event.queryStringParameters;
+  const { releaseId, masterId } = event.queryStringParameters;
 
   try {
-    let release = await getRelease(releaseId);
+    let release = await getRelease(releaseId, masterId);
     return { statusCode: 200, body: JSON.stringify(release) };
   } catch (error) {
     console.log("getRelease error", error);

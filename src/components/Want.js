@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-// import WantlistItem from "./WantlistItem";
+import { Recs } from "./";
 
 const IMAGE_HEIGHT = {
   sm: 134,
@@ -162,10 +162,6 @@ const commaList = (array) => {
   else return null;
 };
 
-// const Format = ({ name, descriptions }) => (
-//   <Info>{`${name}, ${commaList(descriptions)}`}</Info>
-// );
-
 const InfoItem = ({ label, value }) =>
   !!value && (
     <Info>
@@ -183,12 +179,50 @@ const ImageSlider = ({ images }) => (
   </StyledImageSlider>
 );
 
-const parseAnchor = (anchor) => {
-  return anchor.split("/release/").pop().split("?")[0];
-};
+const PlayerButton = ({ videos, video, setVideo, isPlaying, setPlaying }) => (
+  <>
+    {!!videos &&
+      videos.length > 0 &&
+      (isPlaying ? (
+        <StyledMarketButton
+          onClick={() => {
+            setPlaying(false);
+          }}
+        >
+          Pause
+        </StyledMarketButton>
+      ) : (
+        <StyledMarketButton
+          onClick={() => {
+            if (video.uri !== videos[0].uri) setVideo(videos[0]);
+            setPlaying(true);
+          }}
+        >
+          Listen
+        </StyledMarketButton>
+      ))}
+  </>
+);
+
+const MarketButton = ({ numberAvailable, lowestPrice, marketUrl }) => (
+  <>
+    {!!numberAvailable && numberAvailable > 0 ? (
+      <StyledMarketAnchor
+        href={marketUrl}
+      >{`${numberAvailable} for sale from $${lowestPrice.toFixed(
+        2
+      )}`}</StyledMarketAnchor>
+    ) : (
+      <StyledMarketAnchor
+        href={marketUrl}
+      >{`Check marketplace`}</StyledMarketAnchor>
+    )}
+  </>
+);
 
 function Want({
   releaseId,
+  master,
   username,
   title,
   artists,
@@ -212,20 +246,25 @@ function Want({
   setPlaying,
   video,
   setVideo,
+  recs,
+  recsError,
 }) {
   const artistList = !!artists && commaList(artists.map(({ name }) => name));
+  const formatList = !!formats && commaList(formats);
   const firstFormat = !!formats && formats.length > 0 && formats[0];
-
   const isPlaying =
     !!playing && !!videos && videos.length > 0 && video.uri === videos[0].uri;
 
+  const playerButtonProps = { videos, video, setVideo, isPlaying, setPlaying };
+  const marketButtonProps = { numberAvailable, lowestPrice, marketUrl };
   return (
     <StyledWantCard player={!!video}>
       <ImageSlider images={images} />
       <StyledCardBody>
         <h3>{title}</h3>
         <h4>{artistList}</h4>
-        <Info>{firstFormat}</Info>
+        {/* <Info>{firstFormat}</Info> */}
+        <Info>{formatList}</Info>
         <StyledInfoWrapper>
           <InfoItem label="Country" value={country} />
           <InfoItem label="Year" value={year} />
@@ -234,55 +273,15 @@ function Want({
         </StyledInfoWrapper>
       </StyledCardBody>
       <div>
-        {!!videos &&
-          videos.length > 0 &&
-          (isPlaying ? (
-            <StyledMarketButton
-              onClick={() => {
-                setPlaying(false);
-              }}
-            >
-              Pause
-            </StyledMarketButton>
-          ) : (
-            <StyledMarketButton
-              onClick={() => {
-                if (video.uri !== videos[0].uri) setVideo(videos[0]);
-                setPlaying(true);
-              }}
-            >
-              Listen
-            </StyledMarketButton>
-          ))}
-        {!!numberAvailable && numberAvailable > 0 ? (
-          <StyledMarketAnchor
-            href={marketUrl}
-          >{`${numberAvailable} for sale from $${lowestPrice.toFixed(
-            2
-          )}`}</StyledMarketAnchor>
-        ) : (
-          <StyledMarketAnchor
-            href={marketUrl}
-          >{`Check marketplace`}</StyledMarketAnchor>
-        )}
-        {/* {!!masterId && masterId + "" !== releaseId + "" && (
-          <StyledMarketLink to={`/${username}/${masterId}`}>
+        <PlayerButton {...playerButtonProps} />
+        <MarketButton {...marketButtonProps} />
+        {!master && !!masterId && (
+          <StyledMarketLink to={`/master/${masterId}`}>
             Go to master release
           </StyledMarketLink>
-        )} */}
+        )}
       </div>
-      {/* {!!recommendations && (
-        <StyledImageSlider>
-          {recommendations.map(({ anchor, title, artist, thumbnail }) => (
-            <WantlistItem
-              id={parseAnchor(anchor)}
-              title={title}
-              artists={[artist]}
-              cover={thumbnail}
-            />
-          ))}
-        </StyledImageSlider>
-      )} */}
+      <Recs recs={recs} />
     </StyledWantCard>
   );
 }
