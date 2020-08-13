@@ -21,6 +21,8 @@ const MARGIN_RIGHT = {
 };
 
 const StyledWantCard = styled.div`
+  padding-bottom: 18px;
+
   @media (min-width: 768px) {
     padding: 0 0 ${(props) => (props.player ? 18 + 75 : 18)}px;
   }
@@ -276,12 +278,12 @@ function Want({
         <PlayerButton {...playerButtonProps} />
         <MarketButton {...marketButtonProps} />
         {!master && !!masterId && (
-          <StyledMarketLink to={`/master/${masterId}`}>
+          <StyledMarketLink to={`/${username}/master/${masterId}`}>
             Go to master release
           </StyledMarketLink>
         )}
       </div>
-      <Recs recs={recs} />
+      <Recs recs={recs} username={username} />
     </StyledWantCard>
   );
 }

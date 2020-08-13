@@ -2,8 +2,10 @@ import fetch from "node-fetch";
 import cheerio from "cheerio";
 
 const endpoints = {
-  release: (releaseId) => `https://www.discogs.com/release/${releaseId}`,
-  master: (masterId) => `https://www.discogs.com/master/view/${masterId}`,
+  release: (releaseId, page) =>
+    `https://www.discogs.com/release/recs/${releaseId}?type=release&page=${page}`,
+  master: (masterId, page) =>
+    `https://www.discogs.com/release/recs/${masterId}?type=master&page=${page}`,
 };
 
 const options = {
@@ -15,39 +17,44 @@ const options = {
   },
 };
 
+const parseRec = (rec, $) => {
+  const anchor = rec.find(".thumbnail_link").attr("href");
+  const title = rec.find("h4 a").text().toString();
+  let artist = rec.find("h5 a");
+  console.log("artist.length", artist.length);
+  if (artist.length > 1) {
+    artist = artist.map((i, item) => $(item).text().toString()).get();
+    console.log(artist);
+  } else {
+    artist = artist.text().toString();
+  }
+  const thumbnail = rec.find(".thumbnail_center img").attr("src");
+  return { anchor, title, artist, thumbnail };
+};
+
 exports.handler = async (event) => {
   if (event.httpMethod !== "GET")
     return { statusCode: 405, body: "Method Not Allowed" };
 
   const { releaseId, masterId } = event.queryStringParameters;
-
   const id = !!releaseId ? releaseId : masterId;
-  const endpoint = !!masterId ? endpoints.master(id) : endpoints.release(id);
+  const endpoint = !!masterId
+    ? (page) => endpoints.master(id, page)
+    : (page) => endpoints.release(id, page);
 
   try {
-    let response = await fetch(endpoint, options);
-    let res = await response.text();
-    const $ = cheerio.load(res);
-    
-    let recommendations = $("#recs_slider").html().toString();
-    recommendations = recommendations
-      .replace("<!--lazy", "")
-      .replace("lazy-->", "");
-    const rec$ = cheerio.load(recommendations, {
+    let fetches = [...Array(5)].map((_, i) =>
+      fetch(endpoint(i + 1), options).then((res) => res.text())
+    );
+    const allRecs = await Promise.all(fetches);
+
+    const $ = cheerio.load(allRecs.join(""), {
       normalizeWhitespace: true,
     });
-    const recs = rec$(".card");
-
-    const recsArray = recs
-      .map((i, item) => {
-        const rec = $(item);
-        const anchor = rec.find(".thumbnail_link").attr("href");
-        const title = rec.find("h4 a").text().toString();
-        const artist = rec.find("h5 a").text().toString();
-        const thumbnail = rec.find(".thumbnail_center img").attr("src");
-        return { anchor, title, artist, thumbnail };
-      })
+    const recsArray = $(".card")
+      .map((i, item) => parseRec($(item), $))
       .get();
+
     return { statusCode: 200, body: JSON.stringify(recsArray) };
   } catch (error) {
     console.log("error", error);

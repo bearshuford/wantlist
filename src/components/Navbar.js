@@ -66,7 +66,7 @@ function Navbar() {
     sensitive: true,
   });
 
-  const { username, releaseId } = !!match ? match.params : {};
+  const { username } = !!match ? match.params : {};
 
   return (
     <StyledNavbar>
@@ -74,11 +74,11 @@ function Navbar() {
         <h1>wantlist</h1>
       ) : (
         <h1>
-          <StyledHeaderLink to={`/${username}`}>wantlist</StyledHeaderLink>
+          <StyledHeaderLink to="/">wantlist</StyledHeaderLink>
         </h1>
       )}
       {!!username && (
-        <Link to={!releaseId ? '/' : `/${username}`} title="back to search">
+        <Link to={`/${username}`} title="back to list">
           {username}
         </Link>
       )}

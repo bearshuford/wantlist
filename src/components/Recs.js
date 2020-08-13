@@ -29,18 +29,21 @@ const StyledRec = styled(Link)`
 `;
 
 const StyledRecsWrapper = styled.div`
-  display: flex;
-  flex-flow: column nowrap;
-  margin-top: 12px;
+  margin-top: 18px;
+  display: grid;
+  grid-gap: 24px;
+  grid-template-columns: repeat(2, 1fr);
 
-  @media (min-width: 768px) {
-    margin-top: 18px;
-    display: grid;
-    grid-gap: 48px;
+  @media (min-width: 400px) {
     grid-template-columns: repeat(3, 1fr);
   }
 
-  @media (min-width: 1070px) {
+  @media (min-width: 768px) {
+    grid-gap: 48px;
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @media (min-width: 1024px) {
     grid-gap: 32px;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
@@ -48,6 +51,14 @@ const StyledRecsWrapper = styled.div`
 
   @media (min-width: 1400px) {
     grid-column-gap: 42px;
+  }
+
+  @media (min-width: 1500px) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+
+  @media (min-width: 1800px) {
+    grid-template-columns: repeat(7, 1fr);
   }
 `;
 
@@ -60,17 +71,24 @@ const parseAnchor = (anchor) => {
   return anchor.split("/release/").pop().split("?")[0];
 };
 
-function Recs({ recs }) {
-  if (!recs) return null;
+const formatArtist = (artist) => {
+  return Array.isArray(artist) ? artist.join(", ") : artist;
+};
+
+function Recs({ recs, username }) {
+  if (!recs || recs.length < 1) return null;
   return (
     <>
       <StyledRecsHeader>recommendations</StyledRecsHeader>
       <StyledRecsWrapper>
-        {recs.map(({ anchor, title, artist, thumbnail }) => (
-          <StyledRec key={anchor} to={`/release/${parseAnchor(anchor)}`}>
+        {recs.map(({ anchor, title, artist, thumbnail }, i) => (
+          <StyledRec
+            key={anchor + i}
+            to={`/${username}/release/${parseAnchor(anchor)}`}
+          >
             <img src={thumbnail} alt={title} />
             <h3>{title}</h3>
-            <h4>{artist}</h4>
+            <h4>{formatArtist(artist)}</h4>
           </StyledRec>
         ))}
       </StyledRecsWrapper>
