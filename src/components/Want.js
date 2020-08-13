@@ -2,22 +2,25 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-import { Recs } from "./";
+import { Recs, ScrollIntoView } from "./";
 
 const IMAGE_HEIGHT = {
-  sm: 134,
-  md: 192,
-  lg: 168,
+  sm: 144,
+  md: 220,
+  lg: 198,
+  xl: 260,
 };
 const MARGIN_BOTTOM = {
   sm: 20,
   md: 48,
   lg: 32,
+  xl: 32,
 };
 const MARGIN_RIGHT = {
   sm: 15,
   md: 22,
   lg: 20,
+  xl: 20,
 };
 
 const StyledWantCard = styled.div`
@@ -65,6 +68,12 @@ const StyledImageSlider = styled.div`
   }
 
   @media (min-width: 1800px) {
+    margin-bottom: ${MARGIN_BOTTOM.xl}px;
+
+    img {
+      height: ${IMAGE_HEIGHT.xl}px;
+      margin-right: ${MARGIN_RIGHT.xl}px;
+    }
   }
 `;
 
@@ -260,31 +269,33 @@ function Want({
   const playerButtonProps = { videos, video, setVideo, isPlaying, setPlaying };
   const marketButtonProps = { numberAvailable, lowestPrice, marketUrl };
   return (
-    <StyledWantCard player={!!video}>
-      <ImageSlider images={images} />
-      <StyledCardBody>
-        <h3>{title}</h3>
-        <h4>{artistList}</h4>
-        {/* <Info>{firstFormat}</Info> */}
-        <Info>{formatList}</Info>
-        <StyledInfoWrapper>
-          <InfoItem label="Country" value={country} />
-          <InfoItem label="Year" value={year} />
-          <InfoItem label="Genres" value={commaList(genres)} />
-          <InfoItem label="Styles" value={commaList(styles)} />
-        </StyledInfoWrapper>
-      </StyledCardBody>
-      <div>
-        <PlayerButton {...playerButtonProps} />
-        <MarketButton {...marketButtonProps} />
-        {!master && !!masterId && (
-          <StyledMarketLink to={`/${username}/master/${masterId}`}>
-            Go to master release
-          </StyledMarketLink>
-        )}
-      </div>
-      <Recs recs={recs} username={username} />
-    </StyledWantCard>
+    <ScrollIntoView>
+      <StyledWantCard player={!!video}>
+        <ImageSlider images={images} />
+        <StyledCardBody>
+          <h3>{title}</h3>
+          <h4>{artistList}</h4>
+          {/* <Info>{firstFormat}</Info> */}
+          <Info>{formatList}</Info>
+          <StyledInfoWrapper>
+            <InfoItem label="Country" value={country} />
+            <InfoItem label="Year" value={year} />
+            <InfoItem label="Genres" value={commaList(genres)} />
+            <InfoItem label="Styles" value={commaList(styles)} />
+          </StyledInfoWrapper>
+        </StyledCardBody>
+        <div>
+          <PlayerButton {...playerButtonProps} />
+          <MarketButton {...marketButtonProps} />
+          {!master && !!masterId && (
+            <StyledMarketLink to={`/${username}/master/${masterId}`}>
+              Go to master release
+            </StyledMarketLink>
+          )}
+        </div>
+        <Recs releaseId={releaseId} master={master} username={username} />
+      </StyledWantCard>
+    </ScrollIntoView>
   );
 }
 

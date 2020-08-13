@@ -10,6 +10,7 @@ import Navbar from "./Navbar";
 import Loading from "./Loading";
 import Error from "./Error";
 import Recs from "./Recs";
+import ScrollIntoView from "./ScrollIntoView";
 
 export {
   Want,
@@ -24,4 +25,5 @@ export {
   Loading,
   Error,
   Recs,
+  ScrollIntoView,
 };

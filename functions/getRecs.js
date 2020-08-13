@@ -17,19 +17,21 @@ const options = {
   },
 };
 
-const parseRec = (rec, $) => {
+const parseAnchor = (anchor) => {
+  return anchor.split("/release/").pop().split("?")[0];
+};
+
+const parseRec = (rec, $, usedRecs) => {
   const anchor = rec.find(".thumbnail_link").attr("href");
+  const releaseId = parseAnchor(anchor);
   const title = rec.find("h4 a").text().toString();
   let artist = rec.find("h5 a");
-  console.log("artist.length", artist.length);
-  if (artist.length > 1) {
-    artist = artist.map((i, item) => $(item).text().toString()).get();
-    console.log(artist);
-  } else {
-    artist = artist.text().toString();
-  }
+  if (artist.length > 1)
+    artist = artist.map((i, item) => $(item).text().toString()).get().join(", ");
+  else artist = artist.text().toString();
+
   const thumbnail = rec.find(".thumbnail_center img").attr("src");
-  return { anchor, title, artist, thumbnail };
+  return { releaseId, title, artist, thumbnail };
 };
 
 exports.handler = async (event) => {
