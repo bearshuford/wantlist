@@ -1,13 +1,7 @@
 import fetch from "node-fetch";
 import cheerio from "cheerio";
 
-const endpoints = {
-  release: (releaseId, page) =>
-    `https://www.discogs.com/release/recs/${releaseId}?type=release&page=${page}`,
-  master: (masterId, page) =>
-    `https://www.discogs.com/release/recs/${masterId}?type=master&page=${page}`,
-};
-
+import { endpoints } from "./utils";
 
 const PAGES_DEFAULT = 2;
 const OFFSET_DEFAULT = 0;
@@ -17,7 +11,7 @@ const options = {
     accept: "application/json",
     "accept-encoding": "text/html",
     "content-type": "application/json",
-    "user-agent": "NodeDiscogs/0.1",
+    "user-agent": "Wantlist/0.1",
   },
 };
 
@@ -62,8 +56,8 @@ exports.handler = async (event) => {
   const id = !!releaseId ? releaseId : masterId;
 
   const endpoint = !!masterId
-    ? (page) => endpoints.master(id, page)
-    : (page) => endpoints.release(id, page);
+    ? (page) => endpoints.scrapeMaster(id, page)
+    : (page) => endpoints.scrapeRelease(id, page);
 
   let pageCount = pages || PAGES_DEFAULT;
   let current = (offset || OFFSET_DEFAULT) * pageCount;

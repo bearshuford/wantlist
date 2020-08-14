@@ -1,7 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import useSWR, { useSWRInfinite } from "swr";
+import { useSWRInfinite } from "swr";
 
 import { endpoints } from "../utils";
 
