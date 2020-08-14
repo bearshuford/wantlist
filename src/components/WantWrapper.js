@@ -13,9 +13,6 @@ function WantWrapper() {
   const id = !!releaseId ? releaseId : masterId;
   const endpoint = !!masterId ? endpoints.master(id) : endpoints.release(id);
   const { data: release, error } = useSWR(endpoint);
-  
-  // const recsEndpoint = !!masterId ? endpoints.masterRecs(id) : endpoints.recs(id);
-  // const { data: recs, error: recsError } = useSWR(recsEndpoint);
 
   if (!!error || !release) return null;
 

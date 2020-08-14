@@ -20,6 +20,7 @@ const StyledCard = styled(NavLink)`
 
   @media (min-width: 768px) {
     flex-flow: column nowrap;
+    margin-bottom: 0;
   }
 
   ${(props) => props.sidebar && SidebarCard}
@@ -116,15 +117,14 @@ function WantlistItem({ id, cover, title, artists, active }) {
   return (
     <StyledCard
       to={`/${username}/${id}`}
-      active={releaseId === "" + id}
-      sidebar={!!releaseId}
+      active={releaseId === "" + id ? "true" : undefined}
     >
-      <StyledCardMedia sidebar={!!releaseId}>
+      <StyledCardMedia>
         <img src={cover} alt="want cover" />
       </StyledCardMedia>
       <div>
-        <StyledTitle sidebar={!!releaseId}>{title}</StyledTitle>
-        <StyledArtist sidebar={!!releaseId}>
+        <StyledTitle>{title}</StyledTitle>
+        <StyledArtist>
           {artists.map(({ name }) => name).map(commaList)}
         </StyledArtist>
       </div>

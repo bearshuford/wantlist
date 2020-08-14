@@ -1,10 +1,14 @@
+const BASE = "/.netlify/functions/";
+
+const pageQuery = (offset) => (!!offset ? `&offset=${offset}` : "");
+
 const endpoints = {
-  release: (id) => `/.netlify/functions/getRelease?releaseId=${id}`,
-  master: (id) => `/.netlify/functions/getRelease?masterId=${id}`,
-  recs: (id) => `/.netlify/functions/getRecs?releaseId=${id}`,
-  masterRecs: (id) => `/.netlify/functions/getRecs?masterId=${id}`,
-  wantlist: (username) =>
-    `/.netlify/functions/getWantlist?username=${username}`,
+  release: (id) => `${BASE}getRelease?releaseId=${id}`,
+  master: (id) => `${BASE}getRelease?masterId=${id}`,
+  wantlist: (username) => `${BASE}getWantlist?username=${username}`,
+  recs: (id, offset) => `${BASE}getRecs?releaseId=${id}${pageQuery(offset)}`,
+  masterRecs: (id, offset) =>
+    `${BASE}getRecs?masterId=${id}${pageQuery(offset)}`,
 };
 
 export default endpoints;

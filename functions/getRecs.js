@@ -8,6 +8,10 @@ const endpoints = {
     `https://www.discogs.com/release/recs/${masterId}?type=master&page=${page}`,
 };
 
+
+const PAGES_DEFAULT = 2;
+const OFFSET_DEFAULT = 0;
+
 const options = {
   headers: {
     accept: "application/json",
@@ -17,6 +21,7 @@ const options = {
   },
 };
 
+
 const parseAnchor = (anchor) => {
   return anchor.split("/release/").pop().split("?")[0];
 };
@@ -24,13 +29,23 @@ const parseAnchor = (anchor) => {
 const parseRec = (rec, $, usedRecs) => {
   const anchor = rec.find(".thumbnail_link").attr("href");
   const releaseId = parseAnchor(anchor);
-  const title = rec.find("h4 a").text().toString();
-  let artist = rec.find("h5 a");
-  if (artist.length > 1)
-    artist = artist.map((i, item) => $(item).text().toString()).get().join(", ");
-  else artist = artist.text().toString();
 
+  // check for duplication
+  if (usedRecs.includes(releaseId)) return null;
+  else usedRecs.push(releaseId);
+
+  const title = rec.find("h4 a").text().toString();
   const thumbnail = rec.find(".thumbnail_center img").attr("src");
+
+  let artists = rec.find("h5 a");
+  const artist =
+    artists.length < 2
+      ? artists.text().toString()
+      : artists
+          .map((i, item) => $(item).text().toString())
+          .get()
+          .join(", ");
+
   return { releaseId, title, artist, thumbnail };
 };
 
@@ -38,23 +53,33 @@ exports.handler = async (event) => {
   if (event.httpMethod !== "GET")
     return { statusCode: 405, body: "Method Not Allowed" };
 
-  const { releaseId, masterId } = event.queryStringParameters;
+  const {
+    releaseId,
+    masterId,
+    pages,
+    offset,
+  } = event.queryStringParameters;
   const id = !!releaseId ? releaseId : masterId;
+
   const endpoint = !!masterId
     ? (page) => endpoints.master(id, page)
     : (page) => endpoints.release(id, page);
 
+  let pageCount = pages || PAGES_DEFAULT;
+  let current = (offset || OFFSET_DEFAULT) * pageCount;
+
   try {
-    let fetches = [...Array(5)].map((_, i) =>
-      fetch(endpoint(i + 1), options).then((res) => res.text())
+    const fetches = [...Array(pageCount)].map((_, i) =>
+      fetch(endpoint(i + current + 1), options).then((res) => res.text())
     );
     const allRecs = await Promise.all(fetches);
-
     const $ = cheerio.load(allRecs.join(""), {
       normalizeWhitespace: true,
     });
+
+    const idList = [];
     const recsArray = $(".card")
-      .map((i, item) => parseRec($(item), $))
+      .map((i, item) => parseRec($(item), $, idList))
       .get();
 
     return { statusCode: 200, body: JSON.stringify(recsArray) };

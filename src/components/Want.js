@@ -26,9 +26,7 @@ const MARGIN_RIGHT = {
 const StyledWantCard = styled.div`
   padding-bottom: 18px;
 
-  @media (min-width: 768px) {
-    padding: 0 0 ${(props) => (props.player ? 18 + 75 : 18)}px;
-  }
+  padding: 0 0 ${(props) => (props.player ? 18 + 75 : 18)}px;
 
   @media (min-width: 1070px) {
     position: relative;
