@@ -3,33 +3,29 @@ import { useParams } from "react-router-dom";
 import useSWR from "swr";
 
 import { PlayerContext } from "../PlayerContext";
-import { Want } from "./";
+import { Release } from ".";
 import { endpoints } from "../utils";
 
-function WantWrapper() {
-  const { releaseId, masterId, username } = useParams();
+function ReleaseWrapper() {
+  const { releaseId, username } = useParams();
   const { playing, setPlaying, video, setVideo } = useContext(PlayerContext);
-  
-  const id = !!releaseId ? releaseId : masterId;
-  const endpoint = !!masterId ? endpoints.master(id) : endpoints.release(id);
-  const { data: release, error } = useSWR(endpoint);
+  const { data: release, error } = useSWR(endpoints.release(releaseId));
 
   if (!!error || !release) return null;
 
   const props = {
     ...release,
+    loading: !release && !error,
     error,
     releaseId,
-    master: !releaseId && masterId,
-    loading: !release && !error,
+    username,
     playing,
     setPlaying,
     video,
     setVideo,
-    username,
   };
 
-  return <Want {...props} />;
+  return <Release {...props} />;
 }
 
-export default WantWrapper;
+export default ReleaseWrapper;

@@ -6,21 +6,35 @@ const options = {
   headers: { "user-agent": "wantlist" },
 };
 
+const parseVersion = (version) => ({
+  releaseId: version.id,
+  format: version.format,
+  country: version.country,
+  formats: version.major_formats,
+  catno: version.catno,
+  label: version.label,
+  released: version.released,
+  want: version?.stats?.community?.in_wantlist,
+  have: version?.stats?.community?.in_collection,
+  thumb: version.thumb,
+  title: version.title,
+});
+
 const getMaster = async (masterId) => {
   try {
     let request = await fetch(endpoints.master(masterId), options);
     let master = await request.json();
-    
+
     const info = {
       title: master.title,
-      artists: master.artists.map((artist) => {
+      artists: !!master.artists && master.artists.map((artist) => {
         return {
           id: artist.id,
           name: artist.name,
         };
       }),
       genres: master.genres,
-      formats: master.formats && master.formats.map((format) => format.name),
+      formats: !!master.formats && master.formats.map((format) => format.name),
       images: master.images,
       videos: master.videos,
       tracklist: master.tracklist,
@@ -33,7 +47,14 @@ const getMaster = async (masterId) => {
       mainRelease: master.main_release,
     };
 
-    return info;
+    let request2 = await fetch(endpoints.versions(masterId), options);
+    let versionsResponse = await request2.json();
+    const { versions } = versionsResponse || {};
+
+    console.log(endpoints.versions(masterId), versions);
+    if (!!versions && versions.length > 0)
+      return { ...info, versions: versions.map(parseVersion) };
+    else return info;
   } catch (error) {
     throw error;
   }
@@ -50,6 +71,6 @@ exports.handler = async (event) => {
     return { statusCode: 200, body: JSON.stringify(release) };
   } catch (error) {
     console.log("getMaster error", error);
-    return { statusCode: 404, body: "error getting release" };
+    return { statusCode: 404, body: "error getting master" };
   }
 };

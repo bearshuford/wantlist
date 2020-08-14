@@ -2,7 +2,7 @@ import React from "react";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 
-import { Recs, ScrollIntoView } from "./";
+import { Recs, ScrollIntoView } from ".";
 
 const IMAGE_HEIGHT = {
   sm: 144,
@@ -229,17 +229,14 @@ const MarketButton = ({ numberAvailable, lowestPrice, marketUrl }) => (
   </>
 );
 
-function Want({
+function Release({
   releaseId,
-  master,
   username,
   title,
   artists,
   images,
   videos,
-  cover,
   masterId,
-  artistsSort,
   formats,
   country,
   year,
@@ -248,24 +245,26 @@ function Want({
   numberAvailable,
   lowestPrice,
   genres,
-  released,
-  releasedFormatted,
-  notes,
   playing,
   setPlaying,
   video,
   setVideo,
-  recs,
-  recsError,
+  cover,
+  artistsSort,
+  released,
+  releasedFormatted,
+  notes,
 }) {
   const artistList = !!artists && commaList(artists.map(({ name }) => name));
   const formatList = !!formats && commaList(formats);
-  // const firstFormat = !!formats && formats.length > 0 && formats[0];
   const isPlaying =
     !!playing && !!videos && videos.length > 0 && video.uri === videos[0].uri;
 
-  const playerButtonProps = { videos, video, setVideo, isPlaying, setPlaying };
-  const marketButtonProps = { numberAvailable, lowestPrice, marketUrl };
+  const props = {
+    rec: { releaseId, username },
+    playerButton: { videos, video, setVideo, isPlaying, setPlaying },
+    marketButton: { numberAvailable, lowestPrice, marketUrl },
+  };
   return (
     <ScrollIntoView>
       <StyledWantCard player={!!video}>
@@ -273,7 +272,6 @@ function Want({
         <StyledCardBody>
           <h3>{title}</h3>
           <h4>{artistList}</h4>
-          {/* <Info>{firstFormat}</Info> */}
           <Info>{formatList}</Info>
           <StyledInfoWrapper>
             <InfoItem label="Country" value={country} />
@@ -283,18 +281,18 @@ function Want({
           </StyledInfoWrapper>
         </StyledCardBody>
         <div>
-          <PlayerButton {...playerButtonProps} />
-          <MarketButton {...marketButtonProps} />
-          {!master && !!masterId && (
+          <PlayerButton {...props.playerButton} />
+          <MarketButton {...props.marketButton} />
+          {!!masterId && (
             <StyledMarketLink to={`/${username}/master/${masterId}`}>
               Go to master release
             </StyledMarketLink>
           )}
         </div>
-        <Recs releaseId={releaseId} master={master} username={username} />
+        <Recs {...props.rec} />
       </StyledWantCard>
     </ScrollIntoView>
   );
 }
 
-export default Want;
+export default Release;

@@ -108,8 +108,8 @@ const Rec = ({ releaseId, title, artist, thumbnail, username, index }) => (
   </StyledRec>
 );
 
-function Recs({ releaseId, master, username }) {
-  const keyGetter = getKey(recsEndpoint(master, releaseId));
+function Recs({ releaseId, masterId, username }) {
+  const keyGetter = getKey(recsEndpoint(masterId, releaseId));
   const { data: pages, size, setSize } = useSWRInfinite(keyGetter);
 
   if (!pages)

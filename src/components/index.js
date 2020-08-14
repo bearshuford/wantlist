@@ -1,5 +1,7 @@
-import Want from "./Want";
-import WantWrapper from "./WantWrapper";
+import Release from "./Release";
+import Master from "./Master";
+import ReleaseWrapper from "./ReleaseWrapper";
+import MasterWrapper from "./MasterWrapper";
 import List from "./List";
 import Wantlist from "./Wantlist";
 import WantlistItem from "./WantlistItem";
@@ -13,8 +15,10 @@ import Recs from "./Recs";
 import ScrollIntoView from "./ScrollIntoView";
 
 export {
-  Want,
-  WantWrapper,
+  Release,
+  Master,
+  ReleaseWrapper,
+  MasterWrapper,
   List,
   Wantlist,
   WantlistItem,

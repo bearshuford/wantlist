@@ -5,7 +5,7 @@ import { createGlobalStyle } from "styled-components";
 import { SWRConfig } from "swr";
 
 import PlayerContext from "./PlayerContext";
-import { Wantlist, Search, Navbar, Player, WantWrapper } from "./components";
+import { Wantlist, Search, Navbar, Player, MasterWrapper, ReleaseWrapper } from "./components";
 import { fetcher } from "./utils";
 
 const GlobalStyle = createGlobalStyle`
@@ -50,17 +50,17 @@ function App() {
             <Switch>
               <Route
                 path="/:username/master/:masterId"
-                component={WantWrapper}
+                component={MasterWrapper}
                 exact
               />
               <Route
                 path="/:username/release/:releaseId"
-                component={WantWrapper}
+                component={ReleaseWrapper}
                 exact
               />
               <Route
                 path="/:username/:releaseId"
-                component={WantWrapper}
+                component={ReleaseWrapper}
                 exact
               />
               <Route path="/:username" component={Wantlist} exact />
